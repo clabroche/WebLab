@@ -1,0 +1,27 @@
+{
+  "name": "weblab",
+  "version": "1.0.0",
+  "description": "University of Lorraine - Tutored Project for the final year of a BS in Computer Science.",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TPCISIIE/WebLab.git"
+  },
+  "author": "Xavier CHOPIN, Corentin LABROCHE, David LEBRUN, Maxence ANTOINE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TPCISIIE/WebLab/issues"
+  },
+  "homepage": "https://github.com/TPCISIIE/WebLab#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0"
+  }
+}
