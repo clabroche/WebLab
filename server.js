@@ -19,10 +19,10 @@
 
 let app = require('express')();
 
-app.set('views', __dirname + '/src/App/Views');
-app.set('twig options', {
-    strict_variables: false,
-});
+app.set (
+    'views', __dirname + '/src/App/Views',
+    'twig options', { strict_variables: false }
+);
 
 /**
   -------------------------------------
