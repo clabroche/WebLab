@@ -1,7 +1,7 @@
-var express = require('express');
-var homeController = require('../../../src/Master/Controllers/HomeController');
-var hardwareController = require('../../../src/Master/Controllers/HardwareController');
-var router = express.Router();
+let express = require('express');
+let homeController = require('../../../src/Master/Controllers/HomeController');
+let hardwareController = require('../../../src/Master/Controllers/HardwareController');
+let router = express.Router();
 
 
 /* GET home page. */

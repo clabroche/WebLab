@@ -8,14 +8,14 @@
  */
 
 
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var index = require('./src/Master/routes/index');
-var users = require('./src/Master/routes/users');
+let index = require('./src/Master/routes/index');
+let users = require('./src/Master/routes/users');
 
 let express = require('express');
 let app = express();
@@ -49,7 +49,7 @@ app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
