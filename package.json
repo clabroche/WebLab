@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "master": "nodemon master.js",
+    "slave": "nodemon slave.js"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,15 @@
   },
   "homepage": "https://github.com/TPCISIIE/WebLab#readme",
   "dependencies": {
+    "body-parser": "~1.15.2",
+    "bootstrap-sass": "^3.3.7",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
     "express": "^4.14.0",
+    "morgan": "~1.7.0",
+    "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
+    "serve-favicon": "~2.3.0",
     "twig": "^0.10.3"
   }
 }
