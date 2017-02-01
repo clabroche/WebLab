@@ -2,17 +2,17 @@
 
 {% block body %}
 
-  <div class="container">
-    <div class="jumbotron">
-      <h1>{{title}}</h1>
-      {{message}}
+    <div class="container">
+        <div class="jumbotron">
+            <h1>{{title}}</h1>
+            {{message}}
+        </div>
+        {% for slave in slaves %}
+            <div class="slave">
+                {{slave.ip}}<br>
+                {{slave.port}}
+            </div>
+        {% endfor %}
     </div>
-    {% for slave in slaves %}
-      <div class="slave">
-        {{slave.ip}}<br>
-        {{slave.port}}
-      </div>
-    {% endfor %}
-  </div>
 
 {% endblock %}
