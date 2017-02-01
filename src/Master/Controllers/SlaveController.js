@@ -12,11 +12,9 @@ let SlaveController = class SlaveController{
     this.controller = new controller(req, res, next);
   }
   index(){
-    var cache = flatCache.load('slaves');
-    cache.setKey(this.req.body.ip, { port: this.req.body.port, ip: this.req.body.ip });
-    cache.save();
-
-    console.log(cache.getKey(this.req.body.ip));
+    var slaves = flatCache.load('slaves');
+    slaves.setKey(this.req.body.ip, { port: this.req.body.port, ip: this.req.body.ip });
+    slaves.save();
   }
 }
 

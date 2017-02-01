@@ -1,7 +1,7 @@
 /*module gerant la page d'acceuil*/
 let http = require('http')
 const url = require('url');
-var rp = require('request-promise');
+let rp = require('request-promise');
 
 let controller = require('./controller')
 let hardwareController = class HardwareController{

@@ -12,9 +12,8 @@ let homeController = class HomeController{
   }
 
   index(){
-    var cache = flatCache.load('slaves');
-    console.log(cache._persisted);
-    this.res.render('app/home', { title: 'WebLab', message:'It works!!!!', slaves: cache._persisted});
+    var slaves = flatCache.load('slaves');
+    this.res.render('app/home', { title: 'WebLab', message:'It works!!!!', slaves: slaves._persisted});
   }
 }
 
