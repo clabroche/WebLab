@@ -1,8 +1,9 @@
 /*module gerant la page d'acceuil*/
 let http = require('http')
 const url = require('url');
-let flatCache = require('flat-cache')
 let controller = require('./controller')
+var Pandex = require('pantexdb');
+
 let homeController = class HomeController{
   constructor(req, res, next) {
     this.req=req;
@@ -12,8 +13,11 @@ let homeController = class HomeController{
   }
 
   index(){
-    var slaves = flatCache.load('slaves');
-    this.res.render('app/home', { title: 'WebLab', message:'It works!!!!', slaves: slaves._persisted});
+    var db = new Pandex('./','App',['slaves']).open()
+    db.slaves.find({},(err,slaves) => {
+      this.res.render('app/home', {"slaves":slaves });
+    });
+
   }
 }
 

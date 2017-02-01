@@ -1,7 +1,8 @@
 /*module gerant la page d'acceuil*/
 let http = require('http');
 const url = require('url');
-let flatCache = require('flat-cache')
+const Slave = require('../Models/Slave');
+var Pandex = require('pantexdb');
 
 let controller = require('./controller')
 let SlaveController = class SlaveController{
@@ -12,9 +13,14 @@ let SlaveController = class SlaveController{
     this.controller = new controller(req, res, next);
   }
   index(){
-    var slaves = flatCache.load('slaves');
-    slaves.setKey(this.req.body.ip, { port: this.req.body.port, ip: this.req.body.ip });
-    slaves.save();
+    var db = new Pandex('./','App',['slaves']).open()
+    var slave = new Slave(this.req.body.ip,this.req.body.port);
+    db.slaves.find(slave,(err,slaves) => {
+      if (slaves.length==0) {
+        db.slaves.save(slave,(err,obj) => {});
+      }
+    });
+
   }
 }
 

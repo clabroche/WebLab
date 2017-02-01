@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "master": "nodemon master.js",
-    "slave": "nodemon slave.js"
+    "master": "nodemon master.js --ignore db",
+    "slave": " nodemon slave.js --ignore db"
   },
   "repository": {
     "type": "git",
@@ -28,11 +28,13 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "^4.14.0",
+    "find-port": "^2.0.1",
     "flat-cache": "^1.2.2",
     "ip": "^1.1.4",
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
+    "pantexdb": "0.0.2",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "serve-favicon": "~2.3.0",

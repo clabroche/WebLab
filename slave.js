@@ -15,6 +15,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 var rp = require('request-promise');
 var ip = require('ip');
+var findPort = require('find-port')
 
 
 let index = require('./src/Slave/routes/index');
@@ -68,40 +69,22 @@ app.use(function(err, req, res, next) {
 
 
 
-let port = 3001;
+// scan explicitly
+findPort('localhost', 8082, 8200, function(ports) {
+  let port = ports[0];
+  var options = {
+      method: 'POST',
+      uri: 'http://localhost:8081/registerSlave',
+      body: {
+          ip: ip.address(),
+          port: port
+      },
+      json: true // Automatically stringifies the body to JSON
+  };
 
-var options = {
-    method: 'POST',
-    uri: 'http://localhost:8081/registerSlave',
-    body: {
-        ip: ip.address(),
-        port: port
-    },
-    json: true // Automatically stringifies the body to JSON
-};
+  rp(options).then(function (parsedBody) {
+    console.log(parsedBody);
+  }).catch(function (err) {});
+  app.listen(port);
 
-rp(options)
-    .then(function (parsedBody) {
-        console.log(parsedBody);
-    })
-    .catch(function (err) {
-        // POST failed...
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.listen(port);
+})
