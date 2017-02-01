@@ -7,6 +7,14 @@
             <h1>{{title}}</h1>
             {{message}}
         </div>
+        {% for slave in slaves %}
+          <div class="slave">
+            {{slave.ip}}<br>
+            {{slave.port}}
+          </div>
+        {% else %}
+
+        {% endfor %}
     </div>
 
 {% endblock %}

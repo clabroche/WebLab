@@ -13,14 +13,15 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+var rp = require('request-promise');
+var ip = require('ip');
+
 
 let index = require('./src/Slave/routes/index');
 let users = require('./src/Slave/routes/users');
 
 let express = require('express');
 let app = express();
-
-
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -66,4 +67,41 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.listen(3001);
+
+let port = 3001;
+
+var options = {
+    method: 'POST',
+    uri: 'http://localhost:8081/registerSlave',
+    body: {
+        ip: ip.address(),
+        port: port
+    },
+    json: true // Automatically stringifies the body to JSON
+};
+
+rp(options)
+    .then(function (parsedBody) {
+        console.log(parsedBody);
+    })
+    .catch(function (err) {
+        // POST failed...
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(port);
