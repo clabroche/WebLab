@@ -63,7 +63,9 @@ app.use(function(err, req, res, next) {
 
 findPort('localhost', 8082, 8200, function(ports) {
     let port = ports[0];
+    // On se connecte sur le master pour binder les evenements
     var socket = ioClient.connect("http://localhost:8081");
+    // On notifie a master que l'esclave se connecte
     socket.emit('slaveConnection', {ip: ip.address(),port: port});
     server.listen(port);
 });
