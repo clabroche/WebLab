@@ -5806,5 +5806,24 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+#slaveContainer {
+  margin-left: -15px;
+  margin-right: -15px; }
+  #slaveContainer:before, #slaveContainer:after {
+    content: " ";
+    display: table; }
+  #slaveContainer:after {
+    clear: both; }
+  #slaveContainer .slave {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: red;
+    margin: 10px; }
+    @media (min-width: 1200px) {
+      #slaveContainer .slave {
+        float: left;
+        width: 33.33333%; } }
 
 /*# sourceMappingURL=app.css.map */

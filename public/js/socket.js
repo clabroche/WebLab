@@ -23,7 +23,9 @@ socket.on('slaveDisconnect', function(port) {
 // Template pour ajouter un esclave
 function addSlave(port, ip) {
     if (!$("#" + port).length) {
-        $('#slaveContainer').append("<div class='slave' id='" + port + "'>" + ip + "<br>" + port + "</div>");
+      let title = $('<h1>').text(ip+':'+port);
+      let slave = $("<div>").addClass('slave').prop("id",port);
+      $('#slaveContainer').append(slave.append(title));
     }
 
 }
