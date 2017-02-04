@@ -1,7 +1,6 @@
 let express = require('express');
 let homeController = require('../../../src/Master/Controllers/HomeController');
 let hardwareController = require('../../../src/Master/Controllers/HardwareController');
-let SlaveController = require('../../../src/Master/Controllers/SlaveController');
 let router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -10,10 +9,6 @@ router.get('/', (req, res, next) => {
 
 router.get('/hardware', (req, res, next) => {
     new hardwareController(req, res, next).index();
-});
-
-router.post('/registerSlave', (req, res, next) => {
-    new SlaveController(req, res, next).index();
 });
 
 router.get('/infos', (req, res, next) => {

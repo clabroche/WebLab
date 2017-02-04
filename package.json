@@ -32,10 +32,10 @@
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
-    "pantexdb": "0.0.2",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "serve-favicon": "~2.3.0",
+    "socket.io": "^1.7.2",
     "twig": "^0.10.3"
   }
 }

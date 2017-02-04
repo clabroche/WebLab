@@ -13,6 +13,9 @@ let users = require('./src/Slave/routes/users');
 let express = require('express');
 
 let app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var ioClient = require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // uncomment after placing your favicon in /public
@@ -60,17 +63,7 @@ app.use(function(err, req, res, next) {
 
 findPort('localhost', 8082, 8200, function(ports) {
     let port = ports[0];
-    let options = {
-        method: 'POST',
-        uri: 'http://localhost:8081/registerSlave',
-        body: {
-            ip: ip.address(),
-            port: port
-        },
-        json: true
-    };
-    rp(options).then((parsedBody) => {
-        console.log(parsedBody);
-    });
-    app.listen(port);
+    var socket = ioClient.connect("http://localhost:8081");
+    socket.emit('slaveConnection', {ip: ip.address(),port: port});
+    server.listen(port);
 });
