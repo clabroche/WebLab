@@ -1,23 +1,23 @@
 var socket = io('http://localhost:8081');
 
 // Recuperation des serveurs deja connecte
-socket.on('slaveInit', function(data) {
+socket.on('slaveInit', function(slaves) {
     // Pour chaque esclave on met a jour la vue
-    data.forEach(elem => {
-        addSlave(elem.port, elem.ip);
+    slaves.forEach(slave => {
+        addSlave(slave.port, slave.ip);
     });
 });
 
 // Lors d'une nouvelle connexion d'un esclave
-socket.on('slaveConnection', function(data) {
+socket.on('slaveConnection', function(slave) {
     // On ajoute l'esclave a la vue
-    addSlave(data.port, data.ip);
+    addSlave(slave.port, slave.ip);
 });
 
 // Lors de la deconnxion d'un esclave
-socket.on('slaveDisconnect', function(data) {
+socket.on('slaveDisconnect', function(port) {
     //On supprime l'esclave de la vue
-    $("#" + data).remove();
+    $("#" + port).remove();
 });
 
 // Template pour ajouter un esclave
