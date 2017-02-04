@@ -66,38 +66,33 @@ app.use((err, req, res, next) => {
 
 
 
-
-
-
-var allClients = [];
-io.on('connection', function (socket) {
-  socket.emit('slaveInit', allClients);
-  socket.on('slaveConnection', function (data) {
-
-    socket.port = data.port;
-    socket.ip = data.ip;
-    allClients.push({ip:data.ip,port:data.port,id:socket.id});
-    socket.broadcast.emit('slaveConnection', data);
-    socket.on("disconnect",function () {
-      allClients.forEach((client,index,object) => {
-        if (client.id == socket.id) {
-          socket.broadcast.emit('slaveDisconnect', client.port);
-          object.splice(index, 1);
-        }
-      });
-
-
-      console.log(allClients.length);
+var slaves = [];
+// Lorsque un connection quelconque apparait 
+io.on('connection', function(socket) {
+    socket.emit('slaveInit', slaves);
+    //Lors de la connection d'un serveur
+    socket.on('slaveConnection', function(slave) {
+        // On enregistre l'esclave
+        slaves.push({
+            ip: slave.ip,
+            port: slave.port,
+            id: socket.id
+        });
+        // On notifie la vue qu'un esclave s'est connecté
+        socket.broadcast.emit('slaveConnection', slave);
+        // Lors de la deconnexion
+        socket.on("disconnect", function() {
+            // On parcours le tableau des esclaves pour le supprimer de la liste
+            slaves.forEach((slave, index, object) => {
+                if (slave.id == socket.id) {
+                    object.splice(index, 1);
+                    // On notifie la vue de la deconnexion
+                    socket.broadcast.emit('slaveDisconnect', slave.port);
+                }
+            });
+        });
     });
-  });
 });
-
-
-
-
-
-
-
 
 
 
