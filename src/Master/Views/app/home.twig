@@ -7,6 +7,15 @@
             <h1>{{title}}</h1>
             {{message}}
         </div>
+        <div id="slaveContainer">
+          {% for slave in slaves %}
+              <div class="slave">
+                  {{slave.ip}}<br>
+                  {{slave.port}}
+              </div>
+          {% endfor %}
+        </div>
+
     </div>
 
 {% endblock %}
