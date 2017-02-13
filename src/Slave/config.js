@@ -1,3 +1,3 @@
 module.exports = {
-  port: {min:8082, max:8200}
+  port: {min: 8082, max: 8200}
 }
