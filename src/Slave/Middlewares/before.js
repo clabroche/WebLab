@@ -8,6 +8,11 @@ function middlewares (express, app, io) {
     res.io = io
     next()
   })
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    next()
+  })
   app.use(express.static(path.join(path.dirname(require.main.filename), '/public')))
 
   // uncomment after placing your favicon in /public
