@@ -22,7 +22,6 @@ let hardwareController = class hardwareController {
       'totalmem': os.totalmem(),
       'uptime': os.uptime()
     }
-    console.log(infos)
     this.res.send(infos)
   }
 }
