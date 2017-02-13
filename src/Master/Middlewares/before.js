@@ -18,12 +18,13 @@ function middlewares (express, app, io) {
     extended: false
   }))
   app.use(cookieParser())
-  // app.use(require('node-sass-middleware')({
-  //   src: path.join(__dirname, 'public'),
-  //   dest: path.join(__dirname, 'public'),
-  //   indentedSyntax: true,
-  //   sourceMap: true
-  // }))
+  app.use(require('node-sass-middleware')({
+    src: path.join(path.dirname(require.main.filename), 'public'),
+    dest: path.join(path.dirname(require.main.filename), 'public'),
+    indentedSyntax: false,
+    sourceMap: true,
+    debug: true
+  }))
 }
 
 module.exports = middlewares
