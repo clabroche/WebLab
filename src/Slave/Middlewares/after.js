@@ -15,7 +15,7 @@ function middlewares (express, app, io) {
 
     // render the error page
     res.status(err.status || 500)
-    res.render('error')
+    console.log(res)
   })
 }
 
