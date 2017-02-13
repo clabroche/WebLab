@@ -10,8 +10,8 @@ let homeController = class HomeController {
   }
 
   index () {
-    this.res.render('app/home')
+    this.res.render('app/home', {socket: 'home'})
   }
-  }
+}
 
 module.exports = homeController
