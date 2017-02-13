@@ -28,7 +28,7 @@ app.use('/', index);
 app.use('/users', users);
 
 middlewaresAfter(express, app, io);
-findPort('localhost', 8082, 8200, function(ports) {
+findPort('localhost', config.port.min, config.port.max, function(ports) {
     let port = ports[0];
     // On se connecte sur le master pour binder les evenements
     var socket = ioClient.connect("http://localhost:8081");
