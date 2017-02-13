@@ -1,6 +1,6 @@
 let express = require('express')
-let HomeController = require('../../../src/Master/Controllers/HomeController')
-let HardwareController = require('../../../src/Master/Controllers/HardwareController')
+let HomeController = require('../Controllers/HomeController')
+let HardwareController = require('../Controllers/HardwareController')
 let router = express.Router()
 
 router.get('/', (req, res, next) => {

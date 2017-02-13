@@ -1,5 +1,5 @@
 let express = require('express')
-let HardwareController = require('../../../src/Slave/Controllers/hardwareController')
+let HardwareController = require('../Controllers/hardwareController')
 let router = express.Router()
 
 /* GET home page. */
