@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "master": "nodemon master.js --ignore db",
-    "slave": " nodemon slave.js --ignore db"
+    "master": "nodemon src/Master/app.js --ignore db",
+    "slave": " nodemon src/Slave/app.js --ignore db"
   },
   "repository": {
     "type": "git",
