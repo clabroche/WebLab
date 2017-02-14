@@ -1,17 +1,34 @@
 {% extends 'layout.twig' %}
 {% block body %}
-    <div class="container">
-        <div class="jumbotron">
-            <h1>{{title}}</h1>
-            {{message}}
-        </div>
-        <div id="slaveContainer">
-            {% for slave in slaves %}
-                <div class="slave">
-                    {{slave.ip}}<br>
-                    {{slave.port}}
+    <div class="ui main container">
+        <h1>Welcome to your dashboard</h1>
+        <div class="ui three column doubling stackable grid">
+            <div class="column">
+                <div class="ui form">
+                    <div class="field">
+                        <label>Enter your algorithm</label>
+                        <textarea></textarea>
+                    </div>
                 </div>
-            {% endfor %}
+            </div>
+            <div class="column">
+                {% for slave in slaves %}
+                    <div class="slave">
+                        {{slave.ip}}<br>
+                        {{slave.port}}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="ui section divider"></div>
+        <div class="ui container">
+            <h1>Servers connected to the application</h1>
+
+
+            <br/>
+            <br/>   <br/>
+
+
         </div>
     </div>
 {% endblock %}
