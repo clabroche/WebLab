@@ -23,14 +23,17 @@ socket.on('slaveDisconnect', (port) => {
 function addSlave (port, ip) {
   if (!$('#' + port).length) {
     let title = $('<h1>').text(ip + ':' + port)
-    let slave = $('<div>').addClass('slave').prop('id', port).click((event) => {
+    let infos = $('<div>').addClass('infos')
+    let interact = $('<div>').addClass('interact')
+    interact.append('<button>').addClass('btn').text('hardware').click((event) => {
       $.getJSON('http://' + ip + ':' + port + '/hardware', (json, textStatus) => {
         $.each(json, (index, el) => {
           let hardwareRow = $('<div>').text(index + ':' + el)
-          slave.append(hardwareRow)
+          infos.append(hardwareRow)
         })
       })
     })
-    $('#slaveContainer').append(slave.append(title))
+    let slave = $('<div>').addClass('slave').prop('id', port)
+    $('#slaveContainer').append(slave.append(title, interact, infos))
   }
 }

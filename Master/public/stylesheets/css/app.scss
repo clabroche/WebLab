@@ -1,13 +1,32 @@
 @import "customVariable";
-@import "../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 $background: #252525;
 
 
-#slaveContainer{
-  @include make-row();
-  .slave{
-    @include make-x-column(4);
-    background-color: red;
-    margin: 10px;
+.navbar-left{
+
+  img{
+    height:$navbar-height
   }
+}
+#slaveContainer {
+    @include make-row();
+
+    .slave {
+        @include make-xs-column(4);
+
+        h1 {
+            font-size: 1.4em;
+            text-align: center;
+            background-color: $accentColor;
+            padding: 5px;
+            margin: 0;
+            border: solid 1px lighten($accentColor, 10);
+        }
+        background-color: lighten($background,10);
+        border-bottom: solid 1px lighten($accentColor, 10);
+        border-left: solid 1px lighten($accentColor, 10);
+        border-right: solid 1px lighten($accentColor, 10);
+        padding:0;
+    }
 }
