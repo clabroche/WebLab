@@ -1,10 +1,6 @@
 {% extends 'layout.twig' %}
 {% block body %}
     <div class="container">
-        <div class="jumbotron">
-            <h1>{{title}}</h1>
-            {{message}}
-        </div>
         <div id="slaveContainer">
             {% for slave in slaves %}
                 <div class="slave">
