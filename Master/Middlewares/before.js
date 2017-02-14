@@ -2,7 +2,6 @@ let path = require('path')
 let logger = require('morgan')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
-var favicon = require('serve-favicon')
 
 function middlewares (express, app, io) {
   app.use((req, res, next) => {
