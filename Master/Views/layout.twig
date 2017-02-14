@@ -9,10 +9,11 @@
             {% block title %}WebLab{% endblock %}
         </title>
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="stylesheets/css/app.css">
-
-        {% block stylesheets %}{% endblock %}
+        <!-- Semantic -->
+        {% block stylesheets %}
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css"/>
+          <link rel="stylesheet" href="/stylesheets/css/app.css"/>
+        {% endblock %}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +29,13 @@
         {% endblock %}
 
         {% block body %}{% endblock %}
+
+        {% block footer %}
+            {% include 'app/footer.twig' %}
+        {% endblock %}
+
         <script src="/js/lib/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
         <script src="/js/lib/bootstrap.min.js"></script>
         <script src="/js/lib/socket.io.min.js"></script>
         <script type="text/javascript" src="/js/socket/{{socket}}.js"></script>
