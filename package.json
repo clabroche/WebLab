@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/TPCISIIE/WebLab.git"
   },
-  "author": "Xavier CHOPIN, Corentin LABROCHE, David LEBRUN, Maxence ANTOINE",
+  "author": "Xavier CHOPIN, Corentin LABROCHE, David LEBRUN",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/TPCISIIE/WebLab/issues"
