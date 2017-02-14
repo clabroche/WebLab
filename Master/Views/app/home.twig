@@ -11,7 +11,12 @@
                     </div>
                 </div>
             </div>
-            <div class="column">
+
+        </div>
+        <div class="ui section divider"></div>
+        <div class="ui container">
+            <h1>Servers connected to the application</h1>
+            <div id="slaveContainer">
                 {% for slave in slaves %}
                     <div class="slave">
                         {{slave.ip}}<br>
@@ -19,16 +24,6 @@
                     </div>
                 {% endfor %}
             </div>
-        </div>
-        <div class="ui section divider"></div>
-        <div class="ui container">
-            <h1>Servers connected to the application</h1>
-
-
-            <br/>
-            <br/>   <br/>
-
-
         </div>
     </div>
 {% endblock %}
