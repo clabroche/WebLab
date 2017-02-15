@@ -1,4 +1,4 @@
-var socket = io('http://localhost:8081')
+let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
 socket.on('slaveInit', (slaves) => {
   // Pour chaque esclave on met a jour la vue
@@ -7,22 +7,40 @@ socket.on('slaveInit', (slaves) => {
   })
 })
 
-// Lors d'une nouvelle connexion d'un esclave
+/**
+ * When a slave connects to the application
+ */
 socket.on('slaveConnection', (slave) => {
-  // On ajoute l'esclave a la vue
   addSlave(slave.port, slave.ip)
 })
 
-// Lors de la deconnxion d'un esclave
+/**
+ * Function when a slave disconnect from the application
+ */
 socket.on('slaveDisconnect', (port) => {
-  // On supprime l'esclave de la vue
   $('#' + port).remove()
 })
 
-// Template pour ajouter un esclave
+/**
+ * Function that makes the counter static (do not remove !)
+ */
+let countServerId = ( () => {
+    let i = 0;
+    return () => {
+        i++;
+        return i;
+    };
+})();
+
+/**
+ * Function to add a Slave to the HTML Page
+ * @param port
+ * @param ip
+ */
 function addSlave (port, ip) {
   if (!$('#' + port).length) {
-    let title = $('<h1>').text(ip + ':' + port)
+    let icon = $('<i>').addClass('ui disk outline icon')
+    let title = $('<h3>').text("Server #" + countServerId()).prepend(icon)
     let slave = $('<div>').addClass('slave').prop('id', port).click((event) => {
       $.getJSON('http://' + ip + ':' + port + '/hardware', (json, textStatus) => {
         $.each(json, (index, el) => {
