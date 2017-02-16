@@ -2,16 +2,55 @@
 {% block body %}
     <div class="ui main container">
         <h1>Welcome to your dashboard</h1>
-        <div class="ui three column doubling stackable grid">
-            <div class="column">
-                <div class="ui form">
-                    <div class="field">
-                        <label>Enter your algorithm</label>
-                        <textarea></textarea>
+        <div class="ui celled grid">
+            <div class="row">
+                <div class="nine wide column">
+                    <div class="ui cards">
+                        <div class="card">
+                            <div class="content">
+                               <div class="header">
+                                   <i class="disk green outline icon"></i>
+                                    Server Fake #1
+                                </div>
+                                <div class="meta">Available</div>
+                                <div class="description">
+                                    CPU : i7-5820k @ 3.2Ghz <br/>
+                                    RAM : 8GB
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <div class="ui two buttons">
+                                    <div class="ui basic green button">Select</div>
+                                    <div class="ui basic red button">Deselect</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="content">
+                                <div class="header">
+                                    <i class="disk red outline icon"></i>
+                                    Server Fake #2
+                                </div>
+                                <div class="meta">Busy</div>
+                                <div class="description">
+                                    CPU : i7-5820k @ 3.2Ghz <br/>
+                                    RAM : 16GB
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <div class="ui two buttons">
+                                    <div class="ui basic green button">Pause</div>
+                                    <div class="ui basic red button">Stop</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="three wide column">
+                    <img>
+                </div>
 
+            </div>
         </div>
         <div class="ui section divider"></div>
         <div class="ui container">
