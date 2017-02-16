@@ -1,6 +1,7 @@
 /* module gerant la page d'acceuil */
 let Controller = require('./controller')
 const os = require('os')
+
 let hardwareController = class hardwareController {
   constructor (req, res, next) {
     this.req = req
@@ -20,7 +21,8 @@ let hardwareController = class hardwareController {
       'release': os.release(),
       'tmpdir': os.tmpdir(),
       'totalmem': os.totalmem(),
-      'uptime': os.uptime()
+      'uptime': os.uptime(),
+      'cpuUsage': os.loadavg()
     }
     this.res.send(infos)
   }

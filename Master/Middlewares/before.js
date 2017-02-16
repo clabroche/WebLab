@@ -23,6 +23,7 @@ function middlewares (express, app, io) {
     dest: path.join(path.dirname(require.main.filename), 'public'),
     indentedSyntax: false,
     sourceMap: true,
+    outputStyle: 'compressed',
     debug: true
   }))
 }

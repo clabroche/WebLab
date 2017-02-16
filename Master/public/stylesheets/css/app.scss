@@ -1,13 +1,17 @@
-@import "customVariable";
-@import "../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-$background: #252525;
-
+/**@import "customVariable";
 
 #slaveContainer{
-  @include make-row();
   .slave{
-    @include make-x-column(4);
     background-color: red;
     margin: 10px;
   }
+}
+*/
+
+.main.container {
+  margin-top: 7em;
+}
+
+.servers {
+  margin: 4em 0;
 }

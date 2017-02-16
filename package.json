@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TPCISIIE/WebLab.git"
+    "url": "https://github.com/TPCISIIE/WebLab.git"
   },
   "author": "Xavier CHOPIN, Corentin LABROCHE, David LEBRUN",
   "license": "MIT",
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/TPCISIIE/WebLab#readme",
   "dependencies": {
     "body-parser": "~1.15.2",
-    "bootstrap-sass": "^3.3.7",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "^4.14.0",

@@ -1,17 +1,77 @@
 {% extends 'layout.twig' %}
 {% block body %}
-    <div class="container">
-        <div class="jumbotron">
-            <h1>{{title}}</h1>
-            {{message}}
-        </div>
-        <div id="slaveContainer">
-            {% for slave in slaves %}
-                <div class="slave">
-                    {{slave.ip}}<br>
-                    {{slave.port}}
+    <div class="ui main container">
+        <h1>Welcome to your dashboard</h1>
+        <div class="ui celled grid">
+            <div class="row">
+                <div class="nine wide column">
+                    <div class="ui cards">
+                        <div class="card">
+                            <div class="content">
+                               <div class="header">
+                                   <i class="disk green outline icon"></i>
+                                    Server Fake #1
+                                </div>
+                                <div class="meta">Available</div>
+                                <div class="description">
+                                    CPU : i7-5820k @ 3.2Ghz <br/>
+                                    RAM : 8GB
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <div class="ui two buttons">
+                                    <div class="ui basic green button">Select</div>
+                                    <div class="ui basic red button">Deselect</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="content">
+                                <div class="header">
+                                    <i class="disk red outline icon"></i>
+                                    Server Fake #2
+                                </div>
+                                <div class="meta">Busy</div>
+                                <div class="description">
+                                    CPU : i7-5820k @ 3.2Ghz <br/>
+                                    RAM : 16GB
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <div class="ui two buttons">
+                                    <div class="ui basic green button">Pause</div>
+                                    <div class="ui basic red button">Stop</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
+                <div class="seven wide column">
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Enter your algorithm</label>
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="ui bottom positive attached button" tabindex="0">
+                        Validate &nbsp;
+                        <i class="check icon"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="ui section divider"></div>
+        <div class="ui container servers">
+            <h1>Servers connected to the application</h1>
+            <div id="slaveContainer">
+                {% for slave in slaves %}
+                    <div class="slave">
+                        {{slave.ip}}<br>
+                        {{slave.port}}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
