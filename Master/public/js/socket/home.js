@@ -22,24 +22,13 @@ socket.on('slaveDisconnect', (port) => {
 })
 
 /**
- * Function that makes the counter static (do not remove !)
- */
-let countServerId = (() => {
-  let i = 0
-  return () => {
-    i++
-    return i
-  }
-})()
-
-/**
  * Function to add a Slave to the HTML Page
  * @param port
  * @param ip
  */
 function addSlave (port, ip) {
   if (!$('#' + port).length) {
-    let serverName = 'Server #' + countServerId()
+    let serverName = 'Server ' + ip + ':' + port
     let icon = $('<i>').addClass('ui disk outline icon')
     let title = $('<h3>').text(serverName).prepend(icon)
     let slave = $('<div>').addClass('slave').prop('id', port)
@@ -61,7 +50,7 @@ function addSlave (port, ip) {
                .append($('<div>').addClass('progress').text(percent + '%'))
            ).append($('<div>').addClass('label').text('Memory : ' + currentRAM + 'GB /' + totalRAM + 'GB'))
 
-      slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)) )
+      slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)))
       slave.append(ram)
       $('#container1').append(createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram))
     })
