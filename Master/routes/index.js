@@ -18,5 +18,4 @@ router.get('/hardware', (req, res, next) => {
   new HardwareController(req, res, next).index()
 })
 
-
 module.exports = router
