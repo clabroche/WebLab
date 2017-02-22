@@ -1,5 +1,5 @@
 let Controller = require('./controller')
-
+let slaves = require('../Models/Slaves')
 let AlgoController = class AlgoController {
 
   constructor (req, res, next) {
@@ -10,7 +10,8 @@ let AlgoController = class AlgoController {
   }
 
   upload () {
-    eval(JSON.parse(this.req.body.algo))
+    // eval(JSON.parse(this.req.body.algo))
+    console.log(slaves.available())
   }
 }
 
