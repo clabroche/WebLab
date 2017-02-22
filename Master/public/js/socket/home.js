@@ -23,7 +23,7 @@ socket.on('slaveDisconnect', (port) => {
 
 $('#uploadAlgo').click(() => {
   let algo = JSON.stringify($('#textAlgo').val())
-  $.getJSON('/uploadAlgo', {algo: algo}, function (json, textStatus) {
+  $.post('/uploadAlgo', {algo: algo}, function (json, textStatus) {
     console.log(json)
   })
 })

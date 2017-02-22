@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
   new HomeController(req, res, next).index()
 })
 
-router.get('/uploadAlgo', (req, res, next) => {
+router.post('/uploadAlgo', (req, res, next) => {
   new AlgoController(req, res, next).upload()
 })
 
