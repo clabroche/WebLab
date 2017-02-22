@@ -21,6 +21,12 @@ socket.on('slaveDisconnect', (port) => {
   $('#' + port).remove()
 })
 
+$('#uploadAlgo').click(() => {
+  let algo = JSON.stringify($('#textAlgo').val())
+  $.getJSON('/uploadAlgo', {algo: algo}, function (json, textStatus) {
+    console.log(json)
+  })
+})
 /**
  * Function to add a Slave to the HTML Page
  * @param port
