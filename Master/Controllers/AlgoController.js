@@ -1,7 +1,6 @@
 let Controller = require('./controller')
-var safeEval = require('safe-eval')
 
-let homeController = class HomeController {
+let AlgoController = class AlgoController {
 
   constructor (req, res, next) {
     this.req = req
@@ -15,4 +14,4 @@ let homeController = class HomeController {
   }
 }
 
-module.exports = homeController
+module.exports = AlgoController
