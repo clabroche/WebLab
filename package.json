@@ -28,6 +28,7 @@
     "express": "^4.14.0",
     "find-port": "^2.0.1",
     "ip": "^1.1.4",
+    "log-events": "^0.4.0",
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
