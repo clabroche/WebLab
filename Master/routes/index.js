@@ -2,11 +2,16 @@ let express = require('express')
 let HomeController = require('../Controllers/HomeController')
 let slaves = require('../Models/Slaves')
 let HardwareController = require('../Controllers/HardwareController')
+let AlgoController = require('../Controllers/AlgoController')
 let router = express.Router()
 
 router.get('/', (req, res, next) => {
   slaves.addSlave(res)
   new HomeController(req, res, next).index()
+})
+
+router.get('/uploadAlgo', (req, res, next) => {
+  new AlgoController(req, res, next).upload()
 })
 
 router.get('/hardware', (req, res, next) => {
