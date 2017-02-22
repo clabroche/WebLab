@@ -11,7 +11,7 @@ let homeController = class HomeController {
   }
 
   upload () {
-    eval(JSON.parse(this.req.query.algo))
+    eval(JSON.parse(this.req.body.algo))
   }
 }
 
