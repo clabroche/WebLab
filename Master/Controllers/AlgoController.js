@@ -1,5 +1,6 @@
 let Controller = require('./controller')
 let slaves = require('../Models/Slaves')
+let rp = require('request-promise')
 let AlgoController = class AlgoController {
 
   constructor (req, res, next) {
@@ -11,7 +12,25 @@ let AlgoController = class AlgoController {
 
   upload () {
     // eval(JSON.parse(this.req.body.algo))
-    console.log(slaves.available())
+    let slave = slaves.available()[0]
+    console.log(slave.port)
+    if (slave !== undefined) {
+      var options = {
+        method: 'POST',
+        body: {
+          algo: this.req.body.algo
+        },
+        uri: 'http://' + slave.ip + ':' + slave.port + '/launchAlgo',
+        json: true // Automatically stringifies the body to JSON
+      }
+      rp(options).then(function (parsedBody) {
+        console.log(parsedBody)
+      }).catch(function (err) {
+        if (err) {
+          console.log(err)
+        }
+      })
+    }
   }
 }
 
