@@ -18,8 +18,7 @@ app.set('view engine', 'twig')
 
 middlewaresBefore(express, app, io)
 
-app.use('/', index)
-
+app.use('/', index, result)
 
 middlewaresAfter(express, app, io)
 server.listen(config.port)
