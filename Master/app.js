@@ -2,7 +2,7 @@ let path = require('path')
 let middlewaresAfter = require('./Middlewares/after')
 let middlewaresBefore = require('./Middlewares/before')
 let index = require('./routes/index')
-let users = require('./routes/users')
+let result = require('./routes/result')
 let config = require('./config')
 
 let express = require('express')
@@ -19,7 +19,7 @@ app.set('view engine', 'twig')
 middlewaresBefore(express, app, io)
 
 app.use('/', index)
-app.use('/users', users)
+
 
 middlewaresAfter(express, app, io)
 server.listen(config.port)

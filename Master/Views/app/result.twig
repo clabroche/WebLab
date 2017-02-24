@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    <div class="ui main container">
+        <h1>Welcome to your dashboard</h1>
+        <div class="ui celled grid">
+            <div class="row">
+                <div class="nine wide column">
+                    <div id='container1' class="ui cards">
+
+
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Enter your algorithm</label>
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="ui bottom positive attached button" tabindex="0">
+                        Validate &nbsp;
+                        <i class="check icon"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
