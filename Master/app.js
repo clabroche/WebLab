@@ -7,8 +7,8 @@ let config = require('./config')
 
 let express = require('express')
 let app = express()
-var server = require('http').createServer(app)
-var io = require('socket.io')(server)
+let server = require('http').createServer(app)
+let io = require('socket.io')(server)
 
 app.set('views', path.join(__dirname) + '/Views')
 app.set('twig options', {
