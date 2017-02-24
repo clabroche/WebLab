@@ -39,10 +39,5 @@ router.get('/hardware', (req, res, next) => {
   new HardwareController(req, res, next).index()
 })
 
-router.get('/infos', (req, res, next) => {
-  res.render('index', {
-    title: 'Expreees'
-  })
-})
 
 module.exports = router
