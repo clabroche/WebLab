@@ -17,23 +17,23 @@ let AlgoController = class AlgoController {
   }
 
   launch () {
-    console.log(this.req.body.server)
-    // let slave = slaves.available()[0]
-    // if (slave !== undefined) {
-    //   var options = {
-    //     method: 'POST',
-    //     body: {
-    //       algo: algo.get()
-    //     },
-    //     uri: 'http://' + this.req.body.ip + ':' + this.req.body.port + '/launchAlgo',
-    //     json: true // Automatically stringifies the body to JSON
-    //   }
-    //   rp(options).then(function (parsedBody) {
-    //   }).catch(function (err) {
-    //     if (err) {
-    //     }
-    //   })
-    // }
+    let slave = slaves.get(this.req.body.server)
+    console.log(algo.get())
+    if (slave !== undefined) {
+      var options = {
+        method: 'POST',
+        body: {
+          algo: JSON.stringify(algo.get())
+        },
+        uri: 'http://' + slave.ip + ':' + slave.port + '/launchAlgo',
+        json: true // Automatically stringifies the body to JSON
+      }
+      rp(options).then(function (parsedBody) {
+      }).catch(function (err) {
+        if (err) {
+        }
+      })
+    }
   }
 }
 
