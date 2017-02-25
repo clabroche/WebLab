@@ -2,7 +2,6 @@ let Slaves = function () {
   let slaves = []
   return {
     addSlave (res) {
-      console.log('addSlave')
       res.io.on('connection', (socket) => {
         socket.emit('slaveInit', slaves)
         // Lors de la connection d'un serveur
@@ -14,6 +13,7 @@ let Slaves = function () {
             id: socket.id,
             available: true
           })
+          console.log(slave)
           // On notifie la vue qu'un esclave s'est connecté
           socket.broadcast.emit('slaveConnection', slave)
           // Lors de la deconnexion
