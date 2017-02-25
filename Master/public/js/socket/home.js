@@ -22,7 +22,7 @@ socket.on('slaveDisconnect', (port) => {
 })
 
 $('#uploadAlgo').click(() => {
-  let algo = JSON.stringify($('#textAlgo').val())
+  let algo = JSON.stringify(editor.getValue())
   $.post('/uploadAlgo', {algo: algo}, function (json, textStatus) {})
 })
 
