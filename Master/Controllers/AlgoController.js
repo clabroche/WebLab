@@ -14,29 +14,26 @@ let AlgoController = class AlgoController {
   upload () {
     // eval(JSON.parse(this.req.body.algo))
     algo.add(this.req.body.algo)
-    console.log(algo.get())
   }
 
   launch () {
-    let slave = slaves.available()[0]
-    console.log(slave.port)
-    if (slave !== undefined) {
-      var options = {
-        method: 'POST',
-        body: {
-          algo: this.req.body.algo
-        },
-        uri: 'http://' + slave.ip + ':' + slave.port + '/launchAlgo',
-        json: true // Automatically stringifies the body to JSON
-      }
-      rp(options).then(function (parsedBody) {
-        console.log(parsedBody)
-      }).catch(function (err) {
-        if (err) {
-          console.log(err)
-        }
-      })
-    }
+    console.log(this.req.body.server)
+    // let slave = slaves.available()[0]
+    // if (slave !== undefined) {
+    //   var options = {
+    //     method: 'POST',
+    //     body: {
+    //       algo: algo.get()
+    //     },
+    //     uri: 'http://' + this.req.body.ip + ':' + this.req.body.port + '/launchAlgo',
+    //     json: true // Automatically stringifies the body to JSON
+    //   }
+    //   rp(options).then(function (parsedBody) {
+    //   }).catch(function (err) {
+    //     if (err) {
+    //     }
+    //   })
+    // }
   }
 }
 

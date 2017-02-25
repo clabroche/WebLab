@@ -13,6 +13,10 @@ router.post('/uploadAlgo', (req, res, next) => {
   new AlgoController(req, res, next).upload()
 })
 
+router.post('/launchAlgo', (req, res, next) => {
+  new AlgoController(req, res, next).launch()
+})
+
 router.get('/infos', (req, res, next) => {
   res.render('index', {
     title: 'Expreees'
