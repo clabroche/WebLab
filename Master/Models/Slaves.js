@@ -13,7 +13,6 @@ let Slaves = function () {
             id: socket.id,
             available: true
           })
-          console.log(slave)
           // On notifie la vue qu'un esclave s'est connecté
           socket.broadcast.emit('slaveConnection', slave)
           // Lors de la deconnexion

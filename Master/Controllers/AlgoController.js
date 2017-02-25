@@ -18,7 +18,6 @@ let AlgoController = class AlgoController {
 
   launch () {
     let slave = slaves.get(this.req.body.server)
-    console.log(algo.get())
     if (slave !== undefined) {
       let options = {
         method: 'POST',
