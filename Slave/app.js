@@ -11,9 +11,9 @@ let users = require('./routes/users')
 let express = require('express')
 
 let app = express()
-var server = require('http').createServer(app)
-var io = require('socket.io')(server)
-var ioClient = require('socket.io-client')
+let server = require('http').createServer(app)
+let io = require('socket.io')(server)
+let ioClient = require('socket.io-client')
 
 app.set('views', path.join(__dirname) + '/src/Slave/Views')
 app.set('twig options', {
@@ -30,7 +30,7 @@ middlewaresAfter(express, app, io)
 findPort('localhost', config.port.min, config.port.max, (ports) => {
   let port = ports[0]
   // On se connecte sur le master pour binder les evenements
-  var socket = ioClient.connect('http://localhost:8081')
+  let socket = ioClient.connect('http://localhost:8081')
   // On notifie a master que l'esclave se connecte
   socket.emit('slaveConnection', {ip: ip.address(), port: port})
   server.listen(port)
