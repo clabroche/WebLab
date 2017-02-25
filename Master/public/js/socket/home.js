@@ -27,6 +27,16 @@ $('#uploadAlgo').click(() => {
     console.log(json)
   })
 })
+
+$('body').on('click', '.launch', function (event) {
+  $.post('/launchAlgo', {server: $(this).prop('id')}).done((data) => {
+    console.log(data)
+  }).fail((data) => {
+    console.log(data)
+  })
+  /* Act on the event */
+})
+
 /**
  * Function to add a Slave to the HTML Page
  * @param port
@@ -58,14 +68,13 @@ function addSlave (port, ip) {
 
       slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)))
       slave.append(ram)
-      $('#container1').append(createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram))
+      $('#container1').append(createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram, ip, port))
     })
-
     $('#slaveContainer').append(slave.append(title))
   }
 }
 
-function createHTMLCard (serverName, cpuBar, ramBar) {
+function createHTMLCard (serverName, cpuBar, ramBar, ip, port) {
   let headerContent = '<i class="disk green outline icon"></i> ' + serverName
   let header = '<div class="header">' + headerContent + '</div>'
   let description = '<div class="description"> ' + cpuBar[0].outerHTML + '<br/>' + ramBar[0].outerHTML + '</div>'
@@ -73,9 +82,9 @@ function createHTMLCard (serverName, cpuBar, ramBar) {
 
   let action1 = '<div class="ui basic green button"> Pause </div>'
   let action2 = '<div class="ui basic red button"> Stop </div>'
-  let actions = action1 + action2
-  let buttons = '<div class="extra content"> <div class="ui two buttons">' + actions + '</div> </div>'
+  let action3 = '<div class="ui basic blue button launch" id="' + ip + ':' + port + '"> launch </div>'
+  let actions = action1 + action2 + action3
+  let buttons = '<div class="extra content"> <div class="ui one buttons">' + actions + '</div> </div>'
   let content = header + body
-
   return $('<div>').addClass('card').append($('<div>').addClass('content').append(content)).append(buttons)
 }
