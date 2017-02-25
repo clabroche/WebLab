@@ -38,6 +38,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
         <script src="/js/lib/bootstrap.min.js"></script>
         <script src="/js/lib/socket.io.min.js"></script>
-        <script type="text/javascript" src="/js/socket/{{socket}}.js"></script>
+        {% if socket is defined %}
+            <script type="text/javascript" src="/js/socket/{{socket}}.js"></script>
+        {% endif %}
     </body>
 </html>

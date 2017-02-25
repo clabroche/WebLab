@@ -4,7 +4,7 @@ let HardwareController = require('../Controllers/HardwareController')
 let router = express.Router()
 
 router.get('/', (req, res, next) => {
-  var slaves = []
+  let slaves = []
   // Lorsque un connection quelconque apparait
   res.io.on('connection', (socket) => {
     socket.emit('slaveInit', slaves)
@@ -39,10 +39,5 @@ router.get('/hardware', (req, res, next) => {
   new HardwareController(req, res, next).index()
 })
 
-router.get('/infos', (req, res, next) => {
-  res.render('index', {
-    title: 'Expreees'
-  })
-})
 
 module.exports = router
