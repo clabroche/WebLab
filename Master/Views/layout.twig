@@ -13,6 +13,8 @@
         {% block stylesheets %}
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css"/>
           <link rel="stylesheet" href="/stylesheets/css/app.css"/>
+          <link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
+          <link rel="stylesheet" href="https://codemirror.net/addon/hint/show-hint.css">
         {% endblock %}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -38,6 +40,21 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
         <script src="/js/lib/bootstrap.min.js"></script>
         <script src="/js/lib/socket.io.min.js"></script>
+        <script src="https://codemirror.net/lib/codemirror.js"></script>
+        <script src="https://codemirror.net/mode/javascript/javascript.js"></script>
+        <script src="https://codemirror.net/addon/hint/show-hint.js"></script>
+        <script src="https://codemirror.net/addon/edit/closebrackets.js"></script>
+        <script src="https://codemirror.net/addon/hint/javascript-hint.js"></script>
+        <script type="text/javascript">
+
+      var editor = CodeMirror.fromTextArea(document.getElementById("textAlgo"), {
+        lineNumbers: true,
+        extraKeys: {"Ctrl-Space": "autocomplete"},
+        mode: {name: "javascript", globalVars: true},
+        autoCloseBrackets: true
+      });
+
+        </script>
         {% if socket is defined %}
             <script type="text/javascript" src="/js/socket/{{socket}}.js"></script>
         {% endif %}
