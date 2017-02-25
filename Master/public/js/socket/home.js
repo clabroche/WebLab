@@ -23,18 +23,11 @@ socket.on('slaveDisconnect', (port) => {
 
 $('#uploadAlgo').click(() => {
   let algo = JSON.stringify($('#textAlgo').val())
-  $.post('/uploadAlgo', {algo: algo}, function (json, textStatus) {
-    console.log(json)
-  })
+  $.post('/uploadAlgo', {algo: algo}, function (json, textStatus) {})
 })
 
 $('body').on('click', '.launch', function (event) {
-  $.post('/launchAlgo', {server: $(this).prop('id')}).done((data) => {
-    console.log(data)
-  }).fail((data) => {
-    console.log(data)
-  })
-  /* Act on the event */
+  $.post('/launchAlgo', {server: $(this).prop('id')}).done((data) => {}).fail((data) => {})
 })
 
 /**
@@ -50,7 +43,6 @@ function addSlave (port, ip) {
     let slave = $('<div>').addClass('slave').prop('id', port)
     // .click((event) => {
     $.getJSON('http://' + ip + ':' + port + '/hardware', (config, textStatus) => {
-      console.log(config)
       let cutePercent = config.cpuUsage[0].toFixed(2) * 1.8  // because when it's too low we don't see the text and the cpu is always low lol
       let cpu = $('<div>').addClass('ui green active progress')
             .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + cutePercent + '%;')
