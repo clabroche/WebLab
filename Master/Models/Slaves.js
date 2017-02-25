@@ -30,8 +30,18 @@ let Slaves = function () {
         })
       })
     },
-    getSlaves () {
+    all () {
       return slaves
+    },
+    get (server) {
+      server = server.split(':')
+      let slaveResult
+      slaves.forEach(slave => {
+        if (slave.ip === server[0] && slave.port === Number(server[1])) {
+          slaveResult = slave
+        }
+      })
+      return slaveResult
     },
     available () {
       let availableSlaves = []
