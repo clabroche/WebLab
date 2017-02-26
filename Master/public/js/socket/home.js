@@ -18,8 +18,8 @@ socket.on('slaveConnection', (slave) => {
 /**
  * Function when a slave disconnect from the application
  */
-socket.on('slaveDisconnect', (port) => {
-  $('#' + port).remove()
+socket.on('slaveDisconnect', (slave) => {
+  $('.' + slave.id).remove()
 })
 
 $('#uploadAlgo').click(() => {
@@ -41,7 +41,7 @@ function addSlave (slaveObject) {
   let serverName = 'Server ' + slaveObject.ip + ':' + slaveObject.port
   let icon = $('<i>').addClass('ui disk outline icon')
   let title = $('<h3>').text(serverName).prepend(icon)
-  let slave = $('<div>').addClass('slave').prop('id', slaveObject.port)
+  let slave = $('<div>').addClass('slave ' + slaveObject.id)
   // .click((event) => {
   $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
     let cutePercent = config.cpuUsage[0].toFixed(2) * 1.8  // because when it's too low we don't see the text and the cpu is always low lol
