@@ -9,7 +9,9 @@ let AlgoController = class AlgoController {
     this.controller = new Controller(req, res, next)
   }
   launch () {
-    eval(JSON.parse(this.req.body.algo))
+    for (let i = 0; i < this.req.body.iteration; i++) {
+      eval(JSON.parse(this.req.body.algo))
+    }
   }
 }
 

@@ -27,7 +27,8 @@ $('#uploadAlgo').click(() => {
 })
 
 $('body').on('click', '.launch', function (event) {
-  $.post('/launchAlgo', {server: $(this).prop('id')}).done((data) => {}).fail((data) => {})
+  let iteration = $(this).parents().find('.iteration').val()
+  $.post('/launchAlgo', {server: $(this).prop('id'), iteration: iteration}).done((data) => {}).fail((data) => {})
 })
 
 /**
@@ -57,10 +58,10 @@ function addSlave (port, ip) {
                .addClass('bar')
                .append($('<div>').addClass('progress').text(percent + '%'))
            ).append($('<div>').addClass('label').text('Memory : ' + currentRAM + 'GB /' + totalRAM + 'GB'))
-
       slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)))
       slave.append(ram)
-      $('#container1').append(createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram, ip, port))
+      let card = createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram, ip, port)
+      $('#container1').append(card)
     })
     $('#slaveContainer').append(slave.append(title))
   }
@@ -71,12 +72,12 @@ function createHTMLCard (serverName, cpuBar, ramBar, ip, port) {
   let header = '<div class="header">' + headerContent + '</div>'
   let description = '<div class="description"> ' + cpuBar[0].outerHTML + '<br/>' + ramBar[0].outerHTML + '</div>'
   let body = '<div class="meta"> Available </div>' + description
-
+  let iteration = $('<div>').addClass('ui input').append($('<input>').addClass('iteration').prop({type: 'number', placeholder: 'iteration'}))
   let action1 = '<div class="ui basic green button"> Pause </div>'
   let action2 = '<div class="ui basic red button"> Stop </div>'
   let action3 = '<div class="ui basic blue button launch" id="' + ip + ':' + port + '"> launch </div>'
   let actions = action1 + action2 + action3
   let buttons = '<div class="extra content"> <div class="ui one buttons">' + actions + '</div> </div>'
   let content = header + body
-  return $('<div>').addClass('card').append($('<div>').addClass('content').append(content)).append(buttons)
+  return $('<div>').addClass('card').append($('<div>').addClass('content').append(content)).append(iteration).append(buttons)
 }
