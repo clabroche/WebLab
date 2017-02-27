@@ -1,10 +1,16 @@
+let algo = require('../Models/Algo')
+
 let Slaves = function () {
   let slaves = []
   return {
     addSlave (res) {
       res.io.on('connection', (socket) => {
         socket.on('clientSlaveInit', (slaveParameter) => {
-          socket.emit('slaveInit', slaves)
+          let init = {
+            slaves: slaves,
+            state: algo.get()
+          }
+          socket.emit('slaveInit', init)
         })
         // Lors de la connection d'un serveur
         socket.on('slaveConnection', (slaveParameter) => {

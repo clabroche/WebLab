@@ -1,9 +1,9 @@
 let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
-socket.on('slaveInit', (slaves) => {
+socket.on('slaveInit', (init) => {
   // Pour chaque esclave on met a jour la vue
-  slaves.forEach(slave => {
-    addSlave(slave)
+  init.slaves.forEach(slave => {
+    addSlave(slave, init.state)
   })
 })
 socket.emit('clientSlaveInit')
@@ -24,6 +24,7 @@ socket.on('slaveDisconnect', (slave) => {
 $('#uploadAlgo').click(() => {
   let algo = JSON.stringify(editor.getValue())
   $.post('/uploadAlgo', {algo: algo}, function (json, textStatus) {})
+  toggleSlaves(true)
 })
 
 $('body').on('click', '.launch', function (event) {
