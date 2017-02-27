@@ -4,7 +4,7 @@
  * @param port
  * @param ip
  */
-function addSlave (slaveObject) {
+function addSlave (slaveObject, state) {
   if (!$('.' + slaveObject.id).length) {
     let serverName = 'Server ' + slaveObject.ip + ':' + slaveObject.port
     let icon = $('<i>').addClass('ui disk outline icon')
@@ -30,11 +30,24 @@ function addSlave (slaveObject) {
       slave.append(ram)
       let card = createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram, slaveObject)
       $('#container1').append(card)
+      toggleSlaves(state)
     })
     $('#slaveContainer').append(slave.append(title))
   }
 }
 
+function toggleSlaves (state) {
+  console.log($('.card').length)
+  if (!state) {
+    $('.card').each(function (index, el) {
+      $(this).append($('<div>').addClass('desactivate'))
+    })
+  } else {
+    $('.card').each(function (index, el) {
+      $(this).find('.desactivate').remove()
+    })
+  }
+}
 function createHTMLCard (serverName, cpuBar, ramBar, slave) {
   let headerContent = '<i class="disk green outline icon"></i> ' + serverName
   let header = '<div class="header">' + headerContent + '</div>'
