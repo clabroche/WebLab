@@ -46,14 +46,12 @@
         <script src="https://codemirror.net/addon/edit/closebrackets.js"></script>
         <script src="https://codemirror.net/addon/hint/javascript-hint.js"></script>
         <script type="text/javascript">
-
-      var editor = CodeMirror.fromTextArea(document.getElementById("textAlgo"), {
-        lineNumbers: true,
-        extraKeys: {"Ctrl-Space": "autocomplete"},
-        mode: {name: "javascript", globalVars: true},
-        autoCloseBrackets: true
-      });
-
+          let editor = CodeMirror.fromTextArea(document.getElementById("textAlgo"), {
+            lineNumbers: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"},
+            mode: {name: "javascript", globalVars: true},
+            autoCloseBrackets: true
+          });
         </script>
         {% if socket is defined %}
             <script type="text/javascript" src="/js/vue/algo.js"></script>
