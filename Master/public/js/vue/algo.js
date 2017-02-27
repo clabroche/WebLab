@@ -40,11 +40,11 @@ function toggleSlaves (state) {
   console.log($('.card').length)
   if (!state) {
     $('.card').each(function (index, el) {
-      $(this).append($('<div>').addClass('desactivate'))
+      $(this).append($('<div>').addClass('slave-disabled'))
     })
   } else {
     $('.card').each(function (index, el) {
-      $(this).find('.desactivate').remove()
+      $(this).find('.slave-disabled').remove()
     })
   }
 }
