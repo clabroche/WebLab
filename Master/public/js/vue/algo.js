@@ -12,14 +12,16 @@ function addSlave (slaveObject, state) {
     let slave = $('<div>').addClass('slave ' + slaveObject.id)
     // .click((event) => {
     $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
-      let cutePercent = config.cpuUsage[0].toFixed(2) * 1.8  // because when it's too low we don't see the text and the cpu is always low lol
+      // let cutePercent = config.cpuUsage[0].toFixed(2) * 1.8  // because when it's too low we don't see the text and the cpu is always low lol
       let cpu = $('<div>').addClass('ui green active progress')
-            .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + cutePercent + '%;')
-                .addClass('bar')
-                .append($('<div>').addClass('progress').text(config.cpuUsage[0].toFixed(1) + '%'))
-            )
+      config.cpuUsage.forEach(cpuObject => {
+        cpu.append($('<div>').attr('style', 'transition-duration: 300ms; width:' + cpuObject.cpu + '%;')
+            .addClass('bar')
+            .append($('<div>').addClass('progress').text(cpuObject.cpu.toFixed(1) + '%'))
+        )
+      })
       let totalRAM = (config.totalmem / 1000000000).toFixed(2)
-      let currentRAM = (config.freemem / 1000000000).toFixed(2)
+      let currentRAM = (config.freemem / 100000000).toFixed(2)
       let percent = Math.round((currentRAM * 100) / totalRAM)
       let ram = $('<div>').addClass('ui orange active progress')
            .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + percent + '%;')
@@ -37,7 +39,6 @@ function addSlave (slaveObject, state) {
 }
 
 function toggleSlaves (state) {
-  console.log($('.card').length)
   if (!state) {
     $('.card').each(function (index, el) {
       $(this).append($('<div>').addClass('slave-disabled'))
