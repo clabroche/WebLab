@@ -8,16 +8,7 @@ function middlewares (express, app, io) {
     res.io = io
     next()
   })
-  app.use(express.static(path.join(path.dirname(require.main.filename), '/public')))
 
-  // uncomment after placing your favicon in /public
-  // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
-  app.use(logger('dev'))
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({
-    extended: false
-  }))
-  app.use(cookieParser())
   app.use(require('node-sass-middleware')({
     src: path.join(path.dirname(require.main.filename), 'public'),
     dest: path.join(path.dirname(require.main.filename), 'public'),
@@ -26,6 +17,13 @@ function middlewares (express, app, io) {
     outputStyle: 'compressed',
     debug: true
   }))
+  app.use(logger('dev'))
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({
+    extended: false
+  }))
+  app.use(cookieParser())
+  app.use(express.static(path.join(path.dirname(require.main.filename), '/public')))
 }
 
 module.exports = middlewares

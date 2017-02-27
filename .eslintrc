@@ -6,6 +6,8 @@
         "jquery": true
     },
     "globals": {
-        "io": true
+        "io": true,
+        "editor":true,
+        "addSlave":true
     }
 }
