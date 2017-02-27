@@ -23,8 +23,9 @@
   "homepage": "https://github.com/TPCISIIE/WebLab#readme",
   "dependencies": {
     "body-parser": "~1.15.2",
-    "cookie-parser": "~1.4.3",
     "chart.js": "*",
+    "cookie-parser": "~1.4.3",
+    "cpu-stats": "^1.0.0",
     "debug": "~2.2.0",
     "express": "^4.14.0",
     "find-port": "^2.0.1",
