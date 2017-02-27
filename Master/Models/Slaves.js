@@ -3,10 +3,11 @@ let Slaves = function () {
   return {
     addSlave (res) {
       res.io.on('connection', (socket) => {
-        socket.emit('slaveInit', slaves)
+        socket.on('clientSlaveInit', (slaveParameter) => {
+          socket.emit('slaveInit', slaves)
+        })
         // Lors de la connection d'un serveur
         socket.on('slaveConnection', (slaveParameter) => {
-          // On enregistre l'esclave
           let slave = {
             ip: slaveParameter.ip,
             port: slaveParameter.port,

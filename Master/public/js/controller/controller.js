@@ -3,15 +3,14 @@ let socket = io('http://localhost:8081')
 socket.on('slaveInit', (slaves) => {
   // Pour chaque esclave on met a jour la vue
   slaves.forEach(slave => {
-    addSlave(slave.port, slave.ip)
+    addSlave(slave)
   })
 })
-
+socket.emit('clientSlaveInit')
 /**
  * When a slave connects to the application
  */
 socket.on('slaveConnection', (slave) => {
-  console.log(slave)
   addSlave(slave)
 })
 
