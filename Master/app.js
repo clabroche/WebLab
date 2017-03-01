@@ -10,6 +10,7 @@ let app = express()
 let server = require('http').createServer(app)
 let io = require('socket.io')(server)
 
+
 app.set('views', path.join(__dirname) + '/Views')
 app.set('twig options', {
   strict_variables: false
