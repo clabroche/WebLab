@@ -1,6 +1,7 @@
 /* module gerant la page d'acceuil */
 let Controller = require('./controller')
 const os = require('os')
+const cpuStat = require('cpu-stat')
 
 let hardwareController = class hardwareController {
   constructor (req, res, next) {
@@ -10,13 +11,8 @@ let hardwareController = class hardwareController {
     this.controller = new Controller(req, res, next)
   }
   getinfos () {
-    var cpuStats = require('cpu-stats')
-
-    // the first argument is how long to sample for in ms.
-    // longer is more accurate but, you know, longer.
-    // if omitted, defaults to one second.
-    cpuStats(1000, (error, result) => {
-      console.error(error)
+    cpuStat.usagePercent((err, percent, seconds) => {
+      if (err) { return console.log(err) }
       let infos = {
         'architecture': os.arch(),
         'cpus': os.cpus(),
@@ -29,7 +25,7 @@ let hardwareController = class hardwareController {
         'tmpdir': os.tmpdir(),
         'totalmem': os.totalmem(),
         'uptime': os.uptime(),
-        'cpuUsage': result
+        'cpuUsage': percent
       }
       this.res.send(infos)
     })

@@ -1,8 +1,5 @@
-
 /**
  * Function to add a Slave to the HTML Page
- * @param port
- * @param ip
  */
 function addSlave (slaveObject, state) {
   if (!$('.' + slaveObject.id).length) {
@@ -10,18 +7,13 @@ function addSlave (slaveObject, state) {
     let icon = $('<i>').addClass('ui disk outline icon')
     let title = $('<h3>').text(serverName).prepend(icon)
     let slave = $('<div>').addClass('slave ' + slaveObject.id)
-    // .click((event) => {
     $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
-      // let cutePercent = config.cpuUsage[0].toFixed(2) * 1.8  // because when it's too low we don't see the text and the cpu is always low lol
       let cpu = $('<div>').addClass('ui green active progress')
-      config.cpuUsage.forEach(cpuObject => {
-        cpu.append($('<div>').attr('style', 'transition-duration: 300ms; width:' + cpuObject.cpu + '%;')
+      cpu.append($('<div>').attr('style', 'transition-duration: 300ms; width:' + config.cpuUsage.toFixed(1) + '%;')
             .addClass('bar')
-            .append($('<div>').addClass('progress').text(cpuObject.cpu.toFixed(1) + '%'))
-        )
-      })
-      let totalRAM = (config.totalmem / 1000000000).toFixed(2)
-      let currentRAM = (config.freemem / 100000000).toFixed(2)
+            .append($('<div>').addClass('progress').text(config.cpuUsage.toFixed(0) + '%')))
+      let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
+      let currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
       let percent = Math.round((currentRAM * 100) / totalRAM)
       let ram = $('<div>').addClass('ui orange active progress')
            .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + percent + '%;')
