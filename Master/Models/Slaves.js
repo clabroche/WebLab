@@ -3,8 +3,8 @@ let algo = require('../Models/Algo')
 let Slaves = function () {
   let slaves = []
   return {
-    addSlave (res) {
-      res.io.on('connection', (socket) => {
+    addSlave (io) {
+      io.on('connection', (socket) => {
         socket.on('clientSlaveInit', (slaveParameter) => {
           let init = {
             slaves: slaves,

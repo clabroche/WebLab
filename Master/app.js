@@ -11,6 +11,8 @@ let server = require('http').createServer(app)
 let io = require('socket.io')(server)
 
 
+let slaves = require('./Models/Slaves')
+
 app.set('views', path.join(__dirname) + '/Views')
 app.set('twig options', {
   strict_variables: false
@@ -18,8 +20,8 @@ app.set('twig options', {
 app.set('view engine', 'twig')
 
 middlewaresBefore(express, app, io)
-
 app.use('/', index, result)
-
 middlewaresAfter(express, app, io)
+
+slaves.addSlave(io)
 server.listen(config.port)
