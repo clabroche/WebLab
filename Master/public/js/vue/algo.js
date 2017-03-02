@@ -8,12 +8,19 @@ function addSlave (slaveObject, state) {
     let title = $('<h3>').text(serverName).prepend(icon)
     let slave = $('<div>').addClass('slave ' + slaveObject.id)
     $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
+      let totalRAM
+      let currentRAM
+      if (config.platform === 'linux') {
+        totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
+        currentRAM = (config.freemem / Math.pow(10, 8)).toFixed(2)
+      } else {
+        totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
+        currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
+      }
       let cpu = $('<div>').addClass('ui green active progress')
       cpu.append($('<div>').attr('style', 'transition-duration: 300ms; width:' + config.cpuUsage.toFixed(1) + '%;')
             .addClass('bar')
             .append($('<div>').addClass('progress').text(config.cpuUsage.toFixed(0) + '%')))
-      let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
-      let currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
       let percent = Math.round((currentRAM * 100) / totalRAM)
       let ram = $('<div>').addClass('ui orange active progress')
            .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + percent + '%;')
