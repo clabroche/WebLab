@@ -13,6 +13,9 @@ let AlgoController = class AlgoController {
     this.child.send({ algorithm: JSON.parse(this.req.body.algo) })
     this.child.on('message', (m) => {
       console.log('Controller (parent) got :', m)
+      if (m.result != null) {
+        console.log('Result of the algorithm:', m.result)
+      }
     })
 
     /**  let tmp = require('tmp')
