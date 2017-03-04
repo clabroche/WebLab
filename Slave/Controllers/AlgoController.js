@@ -15,8 +15,11 @@ let AlgoController = class AlgoController {
       iteration: this.req.body.iteration
     })
     this.child.on('message', (m) => { // Data the fork sent us after it ran the algorithm
+      if (m.preview != null && m.nthIteration != null) {
+        console.log('Preview at i=' + m.nthIteration + ' :' + m.preview)
+      }
       if (m.result != null) {
-        console.log('Result of the algorithm:', m.result)
+        console.log('\n ---- \n Result of the algorithm:', m.result)
       }
     })
 
