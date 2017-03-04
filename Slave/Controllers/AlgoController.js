@@ -10,9 +10,11 @@ let AlgoController = class AlgoController {
     this.child = require('child_process').fork(`${__dirname}/AlgoChildProcess.js`)
   }
   launch () {
-    this.child.send({ algorithm: JSON.parse(this.req.body.algo) })
-    this.child.on('message', (m) => {
-      console.log('Controller (parent) got :', m)
+    this.child.send({  // We send data to the fork
+      algorithm: JSON.parse(this.req.body.algo),
+      iteration: this.req.body.iteration
+    })
+    this.child.on('message', (m) => { // Data the fork sent us after it ran the algorithm
       if (m.result != null) {
         console.log('Result of the algorithm:', m.result)
       }
