@@ -1,8 +1,6 @@
 let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
 socket.on('slaveInit', (init) => {
-  // Pour chaque esclave on met a jour la vue
-  console.log(init)
   init.slaves.forEach(slave => {
     addSlave(slave, init.state)
   })
@@ -20,6 +18,14 @@ socket.on('slaveConnection', (slave) => {
  */
 socket.on('slaveDisconnect', (slave) => {
   $('.' + slave.id).remove()
+})
+
+/**
+ * Function when a slave send a preview
+ */
+socket.on('displayPreview', (data) => {
+  // TODO: send the data to the HTML
+  console.log('test ' + data)
 })
 
 $('#uploadAlgo').click(() => {

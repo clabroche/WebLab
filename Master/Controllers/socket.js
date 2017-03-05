@@ -1,9 +1,12 @@
 let slaves = require('../Models/Slaves')
 let algo = require('../Models/Algo')
 
-/* classe generique pour les controlleurs */
 let socket = (io) => {
   io.on('connection', (socket) => {
+    socket.on('algorithmPreview', () => {
+      console.log('Coucou !')
+      socket.broadcast.emit('displayPreview', ' come on')
+    })
     socket.on('clientSlaveInit', (slaveParameter) => {
       let init = {
         slaves: slaves.all(),
@@ -20,9 +23,7 @@ let socket = (io) => {
         available: true
       }
       slaves.addSlave(slave)
-      // On notifie la vue qu'un esclave s'est connecté
       socket.broadcast.emit('slaveConnection', slave)
-      // Lors de la deconnexion
       socket.on('disconnect', () => {
         // On parcours le tableau des esclaves pour le supprimer de la liste
         slaves.remove(slave)
