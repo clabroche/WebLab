@@ -24,8 +24,10 @@ socket.on('slaveDisconnect', (slave) => {
  * Function when a slave send a preview
  */
 socket.on('displayPreview', (data) => {
-  // TODO: send the data to the HTML
-  console.log('test ' + data)
+  let output = $('.output')
+  output.show()
+  output.append('[i=' + data.nthIteration + '] : ' + data.preview + ' <br>')
+  output.animate({scrollTop: output.prop('scrollHeight')}, 25)
 })
 
 $('#uploadAlgo').click(() => {
@@ -36,5 +38,6 @@ $('#uploadAlgo').click(() => {
 
 $('body').on('click', '.launch', function (event) {
   let iteration = $(this).parents().find('.iteration').val()
+  $('.output').text('$ >')
   $.post('/launchAlgo', {server: $(this).prop('id'), iteration: iteration}).done((data) => {}).fail((data) => {})
 })
