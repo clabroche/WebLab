@@ -6,6 +6,15 @@
   margin: 4em 0;
 }
 
+.output {
+  border: #302E2F 1px solid;
+  color: #57ff27;
+  background-color: #302e2f;
+  padding: 0.4em 0.7em;
+  border-radius: 2px;
+  display: none;
+}
+
 .slave-disabled{
   position: absolute;
   width: 100%;
