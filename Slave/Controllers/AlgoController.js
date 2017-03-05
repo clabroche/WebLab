@@ -2,7 +2,7 @@
  * Controller that manage the execution of an algorithm
  */
 let Controller = require('./controller')
-let client = require('socket.io-client')
+let socket = require('socket.io-client')
 let AlgoController = class AlgoController {
   /**
    * Constructor
@@ -22,12 +22,15 @@ let AlgoController = class AlgoController {
    * Function that runs an algorithm (send the code to the fork created)
    */
   launch () {
+    console.log(this.req.body.iteration)
     this.child.send({
       algorithm: JSON.parse(this.req.body.algo),
       iteration: this.req.body.iteration
     })
+    console.log(this.req.body)
     this.child.on('message', (m) => {
-      client.connect('http://localhost:8081').once('connect', () => {
+      let client = socket.connect('http://localhost:8081')
+      client.once('connect', () => {
         if (m.preview != null && m.nthIteration != null) {
           client.emit('algorithmPreview', {
             slaveId: this.req.body.slaveId,
