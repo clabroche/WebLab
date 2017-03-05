@@ -3,9 +3,8 @@ let algo = require('../Models/Algo')
 
 let socket = (io) => {
   io.on('connection', (socket) => {
-    socket.on('algorithmPreview', () => {
-      console.log('Coucou !')
-      socket.broadcast.emit('displayPreview', ' come on')
+    socket.on('algorithmPreview', (data) => {
+      socket.broadcast.emit('displayPreview', data)
     })
     socket.on('clientSlaveInit', (slaveParameter) => {
       let init = {
