@@ -9,7 +9,10 @@ let socket = (io) => {
     socket.on('algorithmPreview', (data) => {
       socket.broadcast.emit('displayPreview', data)
     })
-    socket.on('clientSlaveInit', (slaveParameter) => {
+    socket.on('algorithmResult', (data) => {
+      socket.broadcast.emit('displayResult', data)
+    })
+    socket.on('clientSlaveInit', () => {
       let init = {
         slaves: slaves.all(),
         state: algo.get()
