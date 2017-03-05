@@ -13,6 +13,10 @@
   padding: 0.4em 0.7em;
   border-radius: 2px;
   display: none;
+  -webkit-transition: ease-out 2s; /* Safari */
+  transition: ease-out 2s;
+  height: 10em;
+  overflow-y: auto;
 }
 
 .slave-disabled{
