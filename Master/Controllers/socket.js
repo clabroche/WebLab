@@ -1,3 +1,6 @@
+/**
+ * This script manages the entry socket.io events for Master then it send it to the client
+ */
 let slaves = require('../Models/Slaves')
 let algo = require('../Models/Algo')
 
@@ -13,7 +16,6 @@ let socket = (io) => {
       }
       socket.emit('slaveInit', init)
     })
-    // Lors de la connection d'un serveur
     socket.on('slaveConnection', (slaveParameter) => {
       let slave = {
         ip: slaveParameter.ip,
@@ -24,7 +26,6 @@ let socket = (io) => {
       slaves.addSlave(slave)
       socket.broadcast.emit('slaveConnection', slave)
       socket.on('disconnect', () => {
-        // On parcours le tableau des esclaves pour le supprimer de la liste
         slaves.remove(slave)
         socket.broadcast.emit('slaveDisconnect', slave)
       })
