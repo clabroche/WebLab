@@ -51,10 +51,10 @@ function toggleSlaves (state) {
 function createHTMLCard (serverName, cpuBar, ramBar, slave) {
   let headerContent = '<i class="disk green outline icon"></i> ' + serverName
   let header = '<div class="header">' + headerContent + '</div>'
-  let description = '<div class="description"> <div class="output" id="output-' + slave.ip + ':' + slave.port + '"> $ > </div> <br/> ' +
-        '<form class="ui form"> <div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> </form>'
-  let body = '<div class="meta"> Available </div>' + description
-  let actions = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run </div>'
+  let description = '<div class="description"> <form class="ui form"> <div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> </form> <br>' +
+      '<div class="output" id="output-' + slave.ip + ':' + slave.port + '"> $ > </div> <br/>'
+  let body = '<div class="meta" id="meta-' + slave.ip + ':' + slave.port + '"> Available </div>' + description
+  let actions = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
  // let action2 = '<div class="ui basic green button"> Pause </div>'
   // let action3 = '<div class="ui basic red button"> Stop </div>'
   let buttons = '<div class="extra content center aligned grid"> <div class="ui one buttons">' + actions + '</div> </div>'
