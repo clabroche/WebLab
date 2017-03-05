@@ -1,5 +1,5 @@
 /**
- * This script manages the entry socket.io events for Master then it send it to the client
+ * This script manages the entries for socket.io events for Master then it send it to the client
  */
 let slaves = require('../Models/Slaves')
 let algo = require('../Models/Algo')
