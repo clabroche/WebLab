@@ -1,6 +1,6 @@
 /* module gerant la page d'acceuil */
 let Controller = require('./controller')
-
+let ioc = require('socket.io-client')
 let AlgoController = class AlgoController {
   constructor (req, res, next) {
     this.req = req
@@ -16,11 +16,14 @@ let AlgoController = class AlgoController {
     })
     this.child.on('message', (m) => { // Data the fork sent us after it ran the algorithm
       if (m.preview != null && m.nthIteration != null) {
-        console.log('Preview at i=' + m.nthIteration + ' :' + m.preview)
+        let client = ioc.connect('http://localhost:8081')
+        client.once('connect', () => {
+          client.emit('algorithmPreview')
+        })
       }
-      if (m.result != null) {
+     /** if (m.result != null) {
         console.log('\n ---- \n Result of the algorithm:', m.result)
-      }
+      } */
     })
 
     /**  let tmp = require('tmp')
