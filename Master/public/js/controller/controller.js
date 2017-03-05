@@ -21,13 +21,28 @@ socket.on('slaveDisconnect', (slave) => {
 })
 
 /**
- * Function when a slave send a preview
+ * Function to display the preview of an algorithm
  */
 socket.on('displayPreview', (data) => {
-  let output = $('.output')
-  output.show()
+  let output = $('#output-' + data.slaveId)
+  let meta = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
+
+  if ($('#meta-' + data.slaveId).html() != meta) {
+      $('#meta-' + data.slaveId).empty().append(meta)
+      output.show()
+    }
   output.append('[i=' + data.nthIteration + '] : ' + data.preview + ' <br>')
-  output.animate({scrollTop: output.prop('scrollHeight')}, 25)
+  output.animate({scrollTop: output.prop('scrollHeight')}, 12)
+})
+
+/**
+ * Function to display the result of an algorithm
+ */
+socket.on('displayResult', (data) => {
+  let meta = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
+  if ($('#meta-' + data.slaveId).val() != meta) {
+    $('#meta-' + data.slaveId).empty().append(meta)
+  }
 })
 
 $('#uploadAlgo').click(() => {
@@ -40,7 +55,7 @@ $('body').on('click', '.launch', function (event) {
   $('.output').text('$ >')
   $.post('/launchAlgo', {
     server: $(this).prop('id'),
-    slaveId: $(this).parents().find('form').find('input:hidden').val(),
-    iteration: $(this).parents().find('.iteration').val()
+    iteration: $(this).parents().find('.iteration').val(),
+    slaveId: $(this).parents().find('form').find('input:hidden').val()
   })
 })
