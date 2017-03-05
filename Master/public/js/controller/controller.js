@@ -37,7 +37,10 @@ $('#uploadAlgo').click(() => {
 })
 
 $('body').on('click', '.launch', function (event) {
-  let iteration = $(this).parents().find('.iteration').val()
   $('.output').text('$ >')
-  $.post('/launchAlgo', {server: $(this).prop('id'), iteration: iteration}).done((data) => {}).fail((data) => {})
+  $.post('/launchAlgo', {
+    server: $(this).prop('id'),
+    slaveId: $(this).parents().find('form').find('input:hidden').val(),
+    iteration: $(this).parents().find('.iteration').val()
+  })
 })
