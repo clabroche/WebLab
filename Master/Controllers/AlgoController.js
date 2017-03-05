@@ -23,7 +23,8 @@ let AlgoController = class AlgoController {
         method: 'POST',
         body: {
           algo: JSON.stringify(algo.get()),
-          iteration: this.req.body.iteration
+          iteration: this.req.body.iteration,
+          slaveId: this.req.body.slaveId
         },
         uri: 'http://' + slave.ip + ':' + slave.port + '/launchAlgo',
         json: true // Automatically stringifies the body to JSON
