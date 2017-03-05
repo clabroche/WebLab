@@ -29,7 +29,7 @@ function addSlave (slaveObject, state) {
            ).append($('<div>').addClass('label').text('Memory : ' + currentRAM + 'GB /' + totalRAM + 'GB'))
       slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)))
       slave.append(ram)
-      let card = createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram, slaveObject)
+      let card = createHTMLCard(serverName, slaveObject)
       $('#container1').append(card)
       toggleSlaves(state)
     })
@@ -48,16 +48,17 @@ function toggleSlaves (state) {
     })
   }
 }
-function createHTMLCard (serverName, cpuBar, ramBar, slave) {
+function createHTMLCard (serverName, slave) {
+  let slaveId = slave.ip + ':' + slave.port
   let headerContent = '<i class="disk green outline icon"></i> ' + serverName
   let header = '<div class="header">' + headerContent + '</div>'
-  let description = '<div class="description"> <form class="ui form"> <div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> </form> <br>' +
-      '<div class="output" id="output-' + slave.ip + ':' + slave.port + '"> $ > </div> <br/>'
-  let body = '<div class="meta" id="meta-' + slave.ip + ':' + slave.port + '"> Available </div>' + description
-  let actions = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
- // let action2 = '<div class="ui basic green button"> Pause </div>'
-  // let action3 = '<div class="ui basic red button"> Stop </div>'
-  let buttons = '<div class="extra content center aligned grid"> <div class="ui one buttons">' + actions + '</div> </div>'
+  let description = '<div class="description"> <form class="ui form"> ' +
+    '<div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> ' +
+    '<input type="hidden" name="slaveId" value="' + slaveId + '" </form> <br>' +
+    '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>'
+  let body = '<div class="meta" id="meta-' + slaveId + '"> Available </div>' + description
+  let action = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
+  let buttons = '<div class="extra content center aligned grid"> <div class="ui one buttons" id="action-' + slaveId + '">' + action + '</div> </div>'
   let content = header + body
   return $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append(content)).append(buttons)
 }
