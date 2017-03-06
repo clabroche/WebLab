@@ -6,6 +6,7 @@ socket.on('slaveInit', (init) => {
   })
 })
 socket.emit('clientSlaveInit')
+
 /**
  * When a slave connects to the application
  */
@@ -28,8 +29,8 @@ socket.on('displayPreview', (data) => {
   let currentMeta = $('#meta-' + data.slaveId)
   let executing = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
   let finished = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
-
-  if (currentMeta.html() !== executing && currentMeta.html() !== finished ) {
+  let stopped = '<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>'
+  if (currentMeta.html() !== executing && currentMeta.html() !== finished && currentMeta.html() !== stopped) {
     currentMeta.empty().append(executing)
     output.show()
   }
@@ -47,16 +48,35 @@ socket.on('displayResult', (data) => {
   }
 })
 
+/**
+ * Function to save the algorithm
+ */
 $('#uploadAlgo').click(() => {
   let algo = JSON.stringify(editor.getValue())
   $.post('/uploadAlgo', {algo: algo}, function (json, textStatus) {})
   toggleSlaves(true)
 })
 
+/**
+ * Function to stop the rendering of an algorithm
+ */
+$('body').on('click', '.stop-vm', function (event) {
+  let slaveId = $(this).parents().find('form').find('input:hidden').val()
+  $('#meta-' + slaveId).empty().append('<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>')
+  socket.emit('clientStoppedVM', slaveId)
+})
+
+/**
+ * Function to render an algorithm
+ */
 $('body').on('click', '.launch', function (event) {
   let slaveId = $(this).parents().find('form').find('input:hidden').val()
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
+  let stopButton = '<div class="ui basic red button stop-vm"> Stop <i class="window stop right icon"></i></div>'
+  $('#action-' + slaveId).fadeOut(500, () => {
+    $('#action-' + slaveId).empty().append(stopButton).hide().fadeIn(500)
+  })
   $.post('/launchAlgo', {
     server: $(this).prop('id'),
     iteration: $(this).parents().find('.iteration').val(),
