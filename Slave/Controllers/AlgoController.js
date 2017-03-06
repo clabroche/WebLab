@@ -14,6 +14,7 @@ let AlgoController = class AlgoController {
     this.req = req
     this.res = res
     this.next = next
+    this.id = 'Undefined',
     this.controller = new Controller(req, res, next)
     this.child = require('child_process').fork(`${__dirname}/AlgoChildProcess.js`)
   }
@@ -22,18 +23,17 @@ let AlgoController = class AlgoController {
    * Function that runs an algorithm (send the code to the fork created)
    */
   launch () {
-    console.log(this.req.body.iteration)
+    this.id = this.req.body.slaveId
     this.child.send({
       algorithm: JSON.parse(this.req.body.algo),
       iteration: this.req.body.iteration
     })
-    console.log(this.req.body)
     this.child.on('message', (m) => {
       let client = socket.connect('http://localhost:8081')
       client.once('connect', () => {
         if (m.preview != null && m.nthIteration != null) {
           client.emit('algorithmPreview', {
-            slaveId: this.req.body.slaveId,
+            slaveId: this.id,
             preview: m.preview,
             nthIteration: m.nthIteration
           })
@@ -44,6 +44,12 @@ let AlgoController = class AlgoController {
           })
         }
       })
+    })
+    socket.connect('http://localhost:8081').on('stopVM', (slaveId) => {
+      if (this.id === slaveId && this.child.killed === false) {
+        this.child.disconnect()
+        this.child.kill()
+      }
     })
   }
 }
