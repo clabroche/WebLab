@@ -25,10 +25,12 @@ socket.on('slaveDisconnect', (slave) => {
  */
 socket.on('displayPreview', (data) => {
   let output = $('#output-' + data.slaveId)
-  let meta = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
+  let currentMeta = $('#meta-' + data.slaveId)
+  let executing = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
+  let finished = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
 
-  if ($('#meta-' + data.slaveId).html() !== meta) {
-    $('#meta-' + data.slaveId).empty().append(meta)
+  if (currentMeta.html() !== executing && currentMeta.html() !== finished ) {
+    currentMeta.empty().append(executing)
     output.show()
   }
   output.append('[i=' + data.nthIteration + '] : ' + data.preview + ' <br>')
@@ -52,10 +54,12 @@ $('#uploadAlgo').click(() => {
 })
 
 $('body').on('click', '.launch', function (event) {
-  $('.output').text('$ >')
+  let slaveId = $(this).parents().find('form').find('input:hidden').val()
+  $('#output-' + slaveId).text('$ >')
+  $('#meta-' + slaveId).text('Available')
   $.post('/launchAlgo', {
     server: $(this).prop('id'),
     iteration: $(this).parents().find('.iteration').val(),
-    slaveId: $(this).parents().find('form').find('input:hidden').val()
+    slaveId: slaveId
   })
 })
