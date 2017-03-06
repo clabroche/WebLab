@@ -12,6 +12,9 @@ let socket = (io) => {
     socket.on('algorithmResult', (data) => {
       socket.broadcast.emit('displayResult', data)
     })
+    socket.on('clientStoppedVM', (slaveId) => {
+      socket.broadcast.emit('stopVM', slaveId)
+    })
     socket.on('clientSlaveInit', () => {
       let init = {
         slaves: slaves.all(),
