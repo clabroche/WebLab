@@ -8,13 +8,11 @@ function addSlave (slaveObject, state) {
     let title = $('<h3>').text(serverName).prepend(icon)
     let slave = $('<div>').addClass('slave ' + slaveObject.id)
     $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
-      let totalRAM
+      let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
       let currentRAM
       if (config.platform === 'linux') {
-        totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
         currentRAM = (config.freemem / Math.pow(10, 8)).toFixed(2)
       } else {
-        totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
         currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
       }
       let cpu = $('<div>').addClass('ui green active progress')
@@ -50,8 +48,8 @@ function toggleSlaves (state) {
 }
 function createHTMLCard (serverName, slave) {
   let slaveId = slave.ip + ':' + slave.port
-  slaveId = slaveId.split('.').join("")
-  slaveId = slaveId.split(':').join("");
+  slaveId = slaveId.split('.').join('')
+  slaveId = slaveId.split(':').join('')
   let headerContent = '<i class="disk green outline icon"></i> ' + serverName
   let header = '<div class="header">' + headerContent + '</div>'
   let description = '<div class="description"> <form class="ui form"> ' +
