@@ -57,8 +57,10 @@ function createHTMLCard (serverName, slave) {
     '<input type="hidden" name="slaveId" value="' + slaveId + '" </form> <br>' +
     '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>'
   let body = '<div class="meta" id="meta-' + slaveId + '"> Available </div>' + description
-  let action = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div></div>'
-  let buttons = '<div class="extra content center aligned grid"> <div class="ui one buttons" id="action-' + slaveId + '">' + action + '</div> </div>'
+  let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
+  let runButton = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
+  let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
   let content = header + body
+  stopButton.hide()
   return $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append(content)).append(buttons)
 }
