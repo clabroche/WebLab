@@ -58,24 +58,22 @@ $('#uploadAlgo').click(() => {
 })
 
 /**
- * Function to stop the rendering of an algorithm
- */
-$('body').on('click', '.stop-vm', function (event) {
-  let slaveId = $(this).parents().find('form').find('input:hidden').val()
-  $('#meta-' + slaveId).empty().append('<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>')
-  socket.emit('clientStoppedVM', slaveId)
-})
-
-/**
  * Function to render an algorithm
  */
 $('body').on('click', '.launch', function (event) {
   let slaveId = $(this).parents().find('form').find('input:hidden').val()
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
-  let stopButton = '<div class="ui basic red button stop-vm"> Stop <i class="window stop right icon"></i></div>'
-  $('#action-' + slaveId).fadeOut(500, () => {
-    $('#action-' + slaveId).empty().append(stopButton).hide().fadeIn(500)
+  let stopButton = $('#stop-' + slaveId)
+  console.log(stopButton.val())
+  $(this).fadeOut(400, () => {
+    let that = $(this)
+    stopButton.fadeIn(400).click(() => {
+      $('#meta-' + slaveId).empty().append('<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>')
+      socket.emit('clientStoppedVM', slaveId)
+      that.fadeIn(400)
+      stopButton.fadeOut(400)
+    })
   })
   $.post('/launchAlgo', {
     server: $(this).prop('id'),
