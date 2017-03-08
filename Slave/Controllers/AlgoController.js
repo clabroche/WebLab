@@ -1,5 +1,5 @@
 /**
- * Controller that manage the execution of an algorithm
+ * Controller that manages the execution of an algorithm
  */
 let Controller = require('./controller')
 let socket = require('socket.io-client')
