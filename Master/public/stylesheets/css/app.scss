@@ -17,6 +17,10 @@
   transition: ease-out 2s;
   height: 10em;
   overflow-y: auto;
+
+  & span {
+    color: #b41428;
+  }
 }
 
 .slave-disabled{
