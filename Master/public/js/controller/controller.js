@@ -39,6 +39,24 @@ socket.on('displayPreview', (data) => {
 })
 
 /**
+ * Function to display an error of an algorithm
+ */
+socket.on('displayError', (data) => {
+  let output = $('#output-' + data.slaveId)
+  let currentMeta = $('#meta-' + data.slaveId)
+  let executing = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
+  let finished = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
+  let stopped = '<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>'
+  if (currentMeta.html() !== executing && currentMeta.html() !== finished && currentMeta.html() !== stopped) {
+    currentMeta.empty().append(stopped)
+    output.show()
+  }
+  console.log(data.error)
+  output.append('<span>[i=' + data.nthIteration + '] Error : ' + data.error + ' </span><br>')
+  output.animate({scrollTop: output.prop('scrollHeight')}, 12)
+})
+
+/**
  * Function to display the result of an algorithm
  */
 socket.on('displayResult', (data) => {
