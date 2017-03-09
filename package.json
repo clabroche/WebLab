@@ -22,6 +22,9 @@
   },
   "homepage": "https://github.com/TPCISIIE/WebLab#readme",
   "dependencies": {
+    "vm2": "*",
+    "tmp": "*",
+    "chalk": "*",
     "body-parser": "~1.15.2",
     "chart.js": "*",
     "cookie-parser": "~1.4.3",

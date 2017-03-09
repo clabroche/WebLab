@@ -8,13 +8,11 @@ function addSlave (slaveObject, state) {
     let title = $('<h3>').text(serverName).prepend(icon)
     let slave = $('<div>').addClass('slave ' + slaveObject.id)
     $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
-      let totalRAM
+      let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
       let currentRAM
       if (config.platform === 'linux') {
-        totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
         currentRAM = (config.freemem / Math.pow(10, 8)).toFixed(2)
       } else {
-        totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
         currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
       }
       let cpu = $('<div>').addClass('ui green active progress')
@@ -29,7 +27,7 @@ function addSlave (slaveObject, state) {
            ).append($('<div>').addClass('label').text('Memory : ' + currentRAM + 'GB /' + totalRAM + 'GB'))
       slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)))
       slave.append(ram)
-      let card = createHTMLCard(serverName, cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model)), ram, slaveObject)
+      let card = createHTMLCard(serverName, slaveObject)
       $('#container1').append(card)
       toggleSlaves(state)
     })
@@ -48,17 +46,21 @@ function toggleSlaves (state) {
     })
   }
 }
-function createHTMLCard (serverName, cpuBar, ramBar, slave) {
+function createHTMLCard (serverName, slave) {
+  let slaveId = slave.ip + ':' + slave.port
+  slaveId = slaveId.split('.').join('')
+  slaveId = slaveId.split(':').join('')
   let headerContent = '<i class="disk green outline icon"></i> ' + serverName
   let header = '<div class="header">' + headerContent + '</div>'
-  let description = '<div class="description"> ' + cpuBar[0].outerHTML + '<br/>' + ramBar[0].outerHTML + '</div> <br/> ' +
-        '<form class="ui form"> <div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> </form>'
-  let body = '<div class="meta"> Available </div>' + description
-  let action1 = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run </div>'
-  let action2 = '<div class="ui basic green button"> Pause </div>'
-  let action3 = '<div class="ui basic red button"> Stop </div>'
-  let actions = action1 + action2 + action3
-  let buttons = '<div class="extra content center aligned grid"> <div class="ui one buttons">' + actions + '</div> </div>'
+  let description = '<div class="description"> <form class="ui form"> ' +
+    '<div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> ' +
+    '<input type="hidden" name="slaveId" value="' + slaveId + '" </form> <br>' +
+    '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>'
+  let body = '<div class="meta" id="meta-' + slaveId + '"> Available </div>' + description
+  let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
+  let runButton = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
+  let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
   let content = header + body
+  stopButton.hide()
   return $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append(content)).append(buttons)
 }

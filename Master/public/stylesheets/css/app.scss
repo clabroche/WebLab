@@ -6,6 +6,19 @@
   margin: 4em 0;
 }
 
+.output {
+  border: #302E2F 1px solid;
+  color: #57ff27;
+  background-color: #302e2f;
+  padding: 0.4em 0.7em;
+  border-radius: 2px;
+  display: none;
+  -webkit-transition: ease-out 2s; /* Safari */
+  transition: ease-out 2s;
+  height: 10em;
+  overflow-y: auto;
+}
+
 .slave-disabled{
   position: absolute;
   width: 100%;
@@ -17,7 +30,7 @@
     text-align: center;
     width: 100%;
     display: inline-block;
-    padding-top: 40%;
+    padding-top: 30%;
     font-size: 2em;
   }
 }

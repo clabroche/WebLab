@@ -9,6 +9,7 @@
             {% block title %}WebLab{% endblock %}
         </title>
 
+        <script src="/js/lib/jquery.min.js"></script>
         <!-- Semantic -->
         {% block stylesheets %}
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css"/>
@@ -36,7 +37,7 @@
             {% include 'app/footer.twig' %}
         {% endblock %}
 
-        <script src="/js/lib/jquery.min.js"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
         <script src="/js/lib/bootstrap.min.js"></script>
         <script src="/js/lib/socket.io.min.js"></script>

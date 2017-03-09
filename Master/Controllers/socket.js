@@ -1,17 +1,27 @@
+/**
+ * This script manages the entries for socket.io events for Master then it send it to the client
+ */
 let slaves = require('../Models/Slaves')
 let algo = require('../Models/Algo')
 
-/* classe generique pour les controlleurs */
 let socket = (io) => {
   io.on('connection', (socket) => {
-    socket.on('clientSlaveInit', (slaveParameter) => {
+    socket.on('algorithmPreview', (data) => {
+      socket.broadcast.emit('displayPreview', data)
+    })
+    socket.on('algorithmResult', (data) => {
+      socket.broadcast.emit('displayResult', data)
+    })
+    socket.on('clientStoppedVM', (slaveId) => {
+      socket.broadcast.emit('stopVM', slaveId)
+    })
+    socket.on('clientSlaveInit', () => {
       let init = {
         slaves: slaves.all(),
         state: algo.get()
       }
       socket.emit('slaveInit', init)
     })
-    // Lors de la connection d'un serveur
     socket.on('slaveConnection', (slaveParameter) => {
       let slave = {
         ip: slaveParameter.ip,
@@ -20,11 +30,8 @@ let socket = (io) => {
         available: true
       }
       slaves.addSlave(slave)
-      // On notifie la vue qu'un esclave s'est connecté
       socket.broadcast.emit('slaveConnection', slave)
-      // Lors de la deconnexion
       socket.on('disconnect', () => {
-        // On parcours le tableau des esclaves pour le supprimer de la liste
         slaves.remove(slave)
         socket.broadcast.emit('slaveDisconnect', slave)
       })
