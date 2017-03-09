@@ -9,6 +9,9 @@ let socket = (io) => {
     socket.on('algorithmPreview', (data) => {
       socket.broadcast.emit('displayPreview', data)
     })
+    socket.on('algorithmError', (data) => {
+      socket.broadcast.emit('displayError', data)
+    })
     socket.on('algorithmResult', (data) => {
       socket.broadcast.emit('displayResult', data)
     })
