@@ -19,9 +19,12 @@ process.on('message', (m) => {
           preview: result,
           nthIteration: i
         })
-      } catch (err) {
-        console.error('Failed to execute script.', err)
-        // ToDo: send error to client
+      } catch (error) {
+        process.send({
+          error: error.toString(),
+          nthIteration: i
+        })
+        return
       }
     }
     process.send({ result: result }) // To get the final result
