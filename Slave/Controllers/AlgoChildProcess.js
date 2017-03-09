@@ -13,11 +13,16 @@ process.on('message', (m) => {
   if (m.algorithm != null && m.iteration != null) {
     let result = 'Undefined'
     for (let i = 0; i < parseInt(m.iteration); i++) {
-      result = virtualMachine.run(m.algorithm)
-      process.send({ // To get previews
-        preview: result,
-        nthIteration: i
-      })
+      try {
+        result = virtualMachine.run(m.algorithm)
+        process.send({ // To get previews
+          preview: result,
+          nthIteration: i
+        })
+      } catch (err) {
+        console.error('Failed to execute script.', err)
+        // ToDo: send error to client
+      }
     }
     process.send({ result: result }) // To get the final result
   } else {
