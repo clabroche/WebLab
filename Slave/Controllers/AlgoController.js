@@ -51,10 +51,12 @@ let AlgoController = class AlgoController {
         }
       })
     })
-    socket.connect('http://localhost:8081').on('stopVM', (slaveId) => {
+    let client = socket.connect('http://localhost:8081')
+    client.on('stopVM', (slaveId) => {
       if (this.id === slaveId && this.child.killed === false) {
+        client.emit('stopFork')
         this.child.disconnect()
-        this.child.kill()
+        this.child.kill('SIGTERM')
       }
     })
   }
