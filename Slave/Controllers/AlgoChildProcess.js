@@ -8,27 +8,38 @@ let virtualMachine = new NodeVM({
     external: true
   }
 })
-
+let socket = require('socket.io-client')
+let stop = false
 process.on('message', (m) => {
   if (m.algorithm != null && m.iteration != null) {
     let result = 'Undefined'
-    for (let i = 0; i < parseInt(m.iteration); i++) {
-      try {
-        result = virtualMachine.run(m.algorithm)
-        process.send({ // To get previews
-          preview: result,
-          nthIteration: i
+    while (!stop) {
+      for (let i = 0; i < parseInt(m.iteration); i++) {
+        let client = socket.connect('http://localhost:8081')
+        client.on('stopVM', () => {
+          stop = true
+          return
         })
-      } catch (error) {
-        process.send({
-          error: error.toString(),
-          nthIteration: i
-        })
-        return
+        try {
+          result = virtualMachine.run(m.algorithm)
+          process.send({ // To get previews
+            preview: result,
+            nthIteration: i
+          })
+        } catch (error) {
+          stop = true
+          process.send({
+            error: error.toString(),
+            nthIteration: i
+          })
+          return
+        }
       }
+      stop = true
+      process.send({result: result}) // To get the final result
     }
-    process.send({ result: result }) // To get the final result
   } else {
     process.send({ result: 'Error, did not get all the parameters' })
   }
 })
+
