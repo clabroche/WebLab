@@ -1,11 +1,17 @@
 /**
  * This file represents the child of the process, it runs a VM to execute the algorithm
  */
-const {NodeVM} = require('vm2')
+const {NodeVM, VMScript} = require('vm2')
 let virtualMachine = new NodeVM({
   wrapper: 'none',
   require: {
-    external: true
+    timeout: 1000,
+    external: true,
+    mock: {
+      fs: {
+        readFileSync () { return 'Nice try dude!' }
+      }
+    }
   }
 })
 let socket = require('socket.io-client')
@@ -13,19 +19,20 @@ let stop = false
 process.on('message', (m) => {
   if (m.algorithm != null && m.iteration != null) {
     let result = 'Undefined'
-    while (!stop) {
-      for (let i = 0; i < parseInt(m.iteration); i++) {
-        let client = socket.connect('http://localhost:8081')
-        client.on('stopVM', () => {
-          stop = true
-          return
-        })
+    let client = socket.connect('http://localhost:8081')
+    for (let i = 0; i < parseInt(m.iteration); i++) {
+      if (!stop) {
         try {
-          result = virtualMachine.run(m.algorithm)
-          process.send({ // To get previews
-            preview: result,
-            nthIteration: i
+          result = virtualMachine.run(new VMScript(m.algorithm))
+          client.on('stopVM', () => {
+            stop = true
           })
+          if (!stop) {
+            process.send({ // To get previews
+              preview: result,
+              nthIteration: i
+            })
+          }
         } catch (error) {
           stop = true
           process.send({
@@ -35,7 +42,8 @@ process.on('message', (m) => {
           return
         }
       }
-      stop = true
+    }
+    if (!stop) {
       process.send({result: result}) // To get the final result
     }
   } else {
