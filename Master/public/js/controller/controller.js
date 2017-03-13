@@ -28,7 +28,7 @@ socket.on('displayPreview', (data) => {
   let output = $('#output-' + data.slaveId)
   let currentMeta = $('#meta-' + data.slaveId)
   let executing = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
-  let finished = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
+  let finished = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon')).add(' - ').add($('<span>').text('Check the statistics'))
   let stopped = '<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>'
   if (currentMeta.html() !== executing && currentMeta.html() !== finished && currentMeta.html() !== stopped) {
     currentMeta.empty().append(executing)
@@ -45,13 +45,12 @@ socket.on('displayError', (data) => {
   let output = $('#output-' + data.slaveId)
   let currentMeta = $('#meta-' + data.slaveId)
   let executing = '<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>'
-  let finished = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
+  let finished = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon')).add(' - ').add($('<span>').text('Check the statistics'))
   let stopped = '<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>'
   if (currentMeta.html() !== executing && currentMeta.html() !== finished && currentMeta.html() !== stopped) {
     currentMeta.empty().append(stopped)
     output.show()
   }
-  console.log(data.error)
   output.append('<span>[i=' + data.nthIteration + '] Error : ' + data.error + ' </span><br>')
   output.animate({scrollTop: output.prop('scrollHeight')}, 12)
 })
@@ -60,7 +59,14 @@ socket.on('displayError', (data) => {
  * Function to display the result of an algorithm
  */
 socket.on('displayResult', (data) => {
-  let meta = '<span class="ui tiny header green">Finished</span><i class="green check small icon"></i> - <a href=""> Check the statistics</a>'
+  let info = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon')).add(' - ')
+  let link = $('<span>').text('Check the statistics').click(() => {
+    $('#dashboard').fadeOut(900, () => {
+      $('#result').css('display', 'hidden')
+      $('#result').fadeIn(900)
+    })
+  })
+  let meta = info.add(link)
   if ($('#meta-' + data.slaveId).val() !== meta) {
     $('#meta-' + data.slaveId).empty().append(meta)
   }
@@ -83,7 +89,6 @@ $('body').on('click', '.launch', function (event) {
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
   let stopButton = $('#stop-' + slaveId)
-  console.log(stopButton.val())
   $(this).fadeOut(400, () => {
     let that = $(this)
     stopButton.fadeIn(400).click(() => {
