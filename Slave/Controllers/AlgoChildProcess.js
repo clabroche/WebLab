@@ -20,14 +20,17 @@ process.on('message', (m) => {
   if (m.algorithm != null && m.iteration != null) {
     let result = 'Undefined'
     let client = socket.connect('http://localhost:8081')
+    let iterations = []
     for (let i = 0; i < parseInt(m.iteration); i++) {
       if (!stop) {
         try {
           result = virtualMachine.run(new VMScript(m.algorithm))
           client.on('stopVM', () => {
             stop = true
+            return
           })
           if (!stop) {
+            iterations.push(result)
             process.send({ // To get previews
               preview: result,
               nthIteration: i
@@ -44,7 +47,10 @@ process.on('message', (m) => {
       }
     }
     if (!stop) {
-      process.send({result: result}) // To get the final result
+      process.send({
+        result: result,
+        iterations: iterations
+      }) // To get the final result
     }
   } else {
     process.send({ result: 'Error, did not get all the parameters' })
