@@ -47,7 +47,8 @@ let AlgoController = class AlgoController {
           client.emit('algorithmResult', {
             slaveId: this.id,
             result: m.result,
-            iterations: m.iterations
+            iterations: m.iterations,
+            time: m.time
           })
         }
       })
