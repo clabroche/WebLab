@@ -37,18 +37,28 @@ let AlgoController = class AlgoController {
             preview: m.preview,
             nthIteration: m.nthIteration
           })
+        } else if (m.error != null) {
+          client.emit('algorithmError', {
+            slaveId: this.id,
+            error: m.error,
+            nthIteration: m.nthIteration
+          })
         } else if (m.result != null) {
           client.emit('algorithmResult', {
-            slaveId: this.req.body.slaveId,
-            result: m.result
+            slaveId: this.id,
+            result: m.result,
+            iterations: m.iterations,
+            time: m.time
           })
         }
       })
     })
-    socket.connect('http://localhost:8081').on('stopVM', (slaveId) => {
+    let client = socket.connect('http://localhost:8081')
+    client.on('stopVM', (slaveId) => {
       if (this.id === slaveId && this.child.killed === false) {
+        client.emit('stopFork')
         this.child.disconnect()
-        this.child.kill()
+        this.child.kill('SIGTERM')
       }
     })
   }

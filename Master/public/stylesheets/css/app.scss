@@ -6,6 +6,10 @@
   margin: 4em 0;
 }
 
+#result {
+  display:none;
+}
+
 .output {
   border: #302E2F 1px solid;
   color: #57ff27;
@@ -17,6 +21,10 @@
   transition: ease-out 2s;
   height: 10em;
   overflow-y: auto;
+
+  & span {
+    color: #b41428;
+  }
 }
 
 .slave-disabled{
