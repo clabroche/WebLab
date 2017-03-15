@@ -70,17 +70,20 @@ socket.on('displayResult', (data) => {
       $('#dashboard').fadeOut(900, () => {
         $('#result').css('display', 'hidden')
         $('#result').fadeIn(900)
-        let ctx = $('#output')
+        let ctx = $('#output').empty()
         let labels = []
         let values = []
+        let time = []
         let nbIterations = data.iterations.length
         if (nbIterations < 4) {
           for (let i = 0; i < nbIterations; i++) {
             labels.push('i = ' + i)
+            time.push(data.time[i])
             values.push(data.iterations[i])
           }
         } else {
           labels.push('i = 0')
+          time.push(data.time[0])
           values.push(data.iterations[0])
           let arrayRandom = []
           for (let i = 1; i < 3; i++) {
@@ -90,11 +93,13 @@ socket.on('displayResult', (data) => {
                 random = (Math.random() * ((nbIterations - 1) - i) + 1).toFixed(0)
               }
             }
+            time.push(data.time[random])
             values.push(data.iterations[random])
             arrayRandom.push(random)
             labels.push('i = ' + random)
           }
           labels.push('i = ' + (nbIterations - 1))
+          time.push(data.time[nbIterations - 1])
           values.push(data.iterations[nbIterations - 1])
         }
         let sum = 0
@@ -107,9 +112,43 @@ socket.on('displayResult', (data) => {
           data: {
             labels: labels,
             datasets: [{
-              label: 'Output value - Average : ' + average,
+              label: 'Output value',
               data: values,
               backgroundColor: 'rgba(153,255,51,0.4)'
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        })
+
+        let ctx2 = $('#time').empty()
+        let chart2 = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Time in milliseconds',
+              data: data.time,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+              ],
+              borderWidth: 1
             }]
           },
           options: {
