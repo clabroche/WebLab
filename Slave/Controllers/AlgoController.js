@@ -14,7 +14,7 @@ let AlgoController = class AlgoController {
     this.req = req
     this.res = res
     this.next = next
-    this.id = 'Undefined',
+    this.id = 'Undefined'
     this.controller = new Controller(req, res, next)
     this.child = require('child_process').fork(`${__dirname}/AlgoChildProcess.js`)
   }
