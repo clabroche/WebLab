@@ -18,6 +18,19 @@ let Slaves = function () {
       })
       return slaveResult
     },
+    pushResult (data) {
+      slaves.forEach(slave => {
+        if (slave.id === data.slaveId) {
+          if (slave.result === undefined) {
+            slave.result = []
+          }
+          slave.result.push(data.result)
+        }
+      })
+    },
+    getResult (slaveId) {
+
+    },
     available () {
       let availableSlaves = []
       slaves.forEach(slave => {
