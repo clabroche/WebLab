@@ -162,7 +162,7 @@ $('body').on('click', '.launch', function (event) {
     })
   })
   $.post('/launchAlgo', {
-    server: $(this).prop('id'),
+    server: slaveId,
     iteration: $(this).parents().find('.iteration').val(),
     slaveId: slaveId
   })

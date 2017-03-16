@@ -13,6 +13,7 @@ let socket = (io) => {
       socket.broadcast.emit('displayError', data)
     })
     socket.on('algorithmResult', (data) => {
+      console.log(slaves.get(data.slaveId))
       socket.broadcast.emit('displayResult', data)
     })
     socket.on('clientStoppedVM', (slaveId) => {
@@ -26,10 +27,11 @@ let socket = (io) => {
       socket.emit('slaveInit', init)
     })
     socket.on('slaveConnection', (slaveParameter) => {
+      let idSlaves = slaveParameter.ip.split('.').join('') + slaveParameter.port
       let slave = {
         ip: slaveParameter.ip,
         port: slaveParameter.port,
-        id: socket.id,
+        id: idSlaves,
         available: true
       }
       slaves.addSlave(slave)

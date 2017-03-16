@@ -9,6 +9,8 @@ router.get('/hardware', (req, res, next) => {
 })
 
 router.post('/launchAlgo', (req, res, next) => {
+  console.log('lkln')
+  console.log(req.body.slaveId)
   new AlgoController(req, res, next).launch()
 })
 

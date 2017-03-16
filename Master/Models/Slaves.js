@@ -9,11 +9,10 @@ let Slaves = function () {
     all () {
       return slaves
     },
-    get (server) {
-      server = server.split(':')
+    get (slaveId) {
       let slaveResult
       slaves.forEach(slave => {
-        if (slave.ip === server[0] && slave.port === Number(server[1])) {
+        if (slave.id === slaveId) {
           slaveResult = slave
         }
       })
