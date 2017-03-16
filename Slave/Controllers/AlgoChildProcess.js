@@ -3,6 +3,8 @@
  */
 const {NodeVM, VMScript} = require('vm2')
 const perfy = require('perfy')
+const util = require('util')
+const VM = require('vm')
 let virtualMachine = new NodeVM({
   wrapper: 'none',
   require: {
@@ -23,13 +25,25 @@ process.on('message', (m) => {
     for (let i = 0; i < parseInt(m.iteration); i++) {
       try {
         perfy.start('rendering')
-        result = virtualMachine.run(new VMScript(m.algorithm))
+        const sandbox = {
+          animal: 'cat',
+          count: 2
+        }
+
+        const script = new VM.Script(m.algorithm)
+
+        const context = new VM.createContext(sandbox)
+
+        script.runInContext(context)
         iterations.push(result)
         let executionTime = perfy.end('rendering')
         time.push(executionTime.milliseconds)
         process.send({ // To get previews
           preview: result,
           nthIteration: i
+        })
+        process.send({
+          result: util.inspect(sandbox)
         })
       } catch (error) {
         process.send({
@@ -39,11 +53,6 @@ process.on('message', (m) => {
         return
       }
     }
-    process.send({
-      result: result,
-      iterations: iterations,
-      time: time
-    }) // To get the final result
   } else {
     process.send({ result: 'Error, did not get all the parameters' })
   }
