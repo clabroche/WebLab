@@ -23,6 +23,7 @@ let AlgoController = class AlgoController {
         method: 'POST',
         body: {
           algo: JSON.stringify(algo.get()),
+          output: algo.getOutput(),
           iteration: this.req.body.iteration,
           slaveId: this.req.body.slaveId
         },

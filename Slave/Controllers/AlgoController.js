@@ -23,9 +23,9 @@ let AlgoController = class AlgoController {
    * Function that runs an algorithm (send the code to the fork created)
    */
   launch () {
-    console.log(this.req.body.slaveId)
     this.id = this.req.body.slaveId
     this.child.send({
+      output: this.req.body.output,
       algorithm: JSON.parse(this.req.body.algo),
       iteration: this.req.body.iteration
     })

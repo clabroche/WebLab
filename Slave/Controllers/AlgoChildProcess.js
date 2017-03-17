@@ -5,6 +5,8 @@ const {NodeVM, VMScript} = require('vm2')
 const perfy = require('perfy')
 const util = require('util')
 const VM = require('vm')
+let eachr = require('util-each')
+
 let virtualMachine = new NodeVM({
   wrapper: 'none',
   require: {
@@ -25,10 +27,7 @@ process.on('message', (m) => {
     for (let i = 0; i < parseInt(m.iteration); i++) {
       try {
         perfy.start('rendering')
-        const sandbox = {
-          animal: 'cat',
-          count: 2
-        }
+        const sandbox = {}
 
         const script = new VM.Script(m.algorithm)
 
@@ -42,8 +41,16 @@ process.on('message', (m) => {
           preview: result,
           nthIteration: i
         })
+        let sandboxResult = {}
+        eachr(sandbox, function (sandboxValue, sandboxKey) {
+          eachr(m.output, function (outputValue, outputKey) {
+            if (sandboxKey == outputValue) {
+              sandboxResult[outputValue] = sandboxValue
+            }
+          })
+        })
         process.send({
-          result: util.inspect(sandbox)
+          result: sandboxResult
         })
       } catch (error) {
         process.send({
