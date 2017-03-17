@@ -28,8 +28,13 @@ let Slaves = function () {
         }
       })
     },
-    getResult (slaveId) {
-
+    changeStatus (slaveId, status) {
+      slaves.forEach(slave => {
+        if (slave.id === slaveId) {
+          slave.status = status
+        }
+      })
+      console.log(slaves)
     },
     available () {
       let availableSlaves = []
