@@ -1,0 +1,17 @@
+{% extends 'layout.twig' %}
+{% block body %}
+<div id="result" class="ui main container" style="display: block;">
+  <h1><a id="backToDashboard"><i class="teal arrow left icon"></i></a>Result of the algorithm</h1>
+  <h3>Time</h3>
+  <canvas id="time" width="400px" height="120px"></canvas>
+  <hr>
+  <h3>Outputs</h3>
+  <canvas id="output" width="400px" height="120px"></canvas>
+  <br> <br>
+  <script src="./js/lib/chart.min.js"></script>
+  <script src="./js/controller/chart.js"></script>
+</div>
+    {% block result %}
+        {% include 'app/result.twig' %}
+    {% endblock %}
+{% endblock %}

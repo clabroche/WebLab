@@ -37,10 +37,6 @@ process.on('message', (m) => {
         iterations.push(result)
         let executionTime = perfy.end('rendering')
         time.push(executionTime.milliseconds)
-        process.send({ // To get previews
-          preview: result,
-          nthIteration: i
-        })
         let sandboxResult = {}
         eachr(sandbox, function (sandboxValue, sandboxKey) {
           eachr(m.output, function (outputValue, outputKey) {
@@ -49,6 +45,7 @@ process.on('message', (m) => {
             }
           })
         })
+        sandboxResult.iterations = i
         process.send({
           result: sandboxResult
         })
