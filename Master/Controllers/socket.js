@@ -33,7 +33,7 @@ let socket = (io) => {
         ip: slaveParameter.ip,
         port: slaveParameter.port,
         id: idSlaves,
-        available: true
+        status: 'available'
       }
       slaves.addSlave(slave)
       socket.broadcast.emit('slaveConnection', slave)
