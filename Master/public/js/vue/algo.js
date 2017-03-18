@@ -2,7 +2,6 @@
  * Function to add a Slave to the HTML Page
  */
 function addSlave (slaveObject, state) {
-  console.log(slaveObject)
   if (!$('.' + slaveObject.id).length) {
     let serverName = 'Server ' + slaveObject.ip + ':' + slaveObject.port
     let icon = $('<i>').addClass('ui disk outline icon')
@@ -51,19 +50,23 @@ function createHTMLCard (serverName, slave) {
   let slaveId = slave.ip + ':' + slave.port
   slaveId = slaveId.split('.').join('')
   slaveId = slaveId.split(':').join('')
-  let headerContent = '<i class="disk green outline icon"></i> ' + serverName
-  let header = '<div class="header">' + headerContent + '</div>'
-  let description = '<div class="description"> <form class="ui form"> ' +
-    '<div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> ' +
-    '<input type="hidden" name="slaveId" value="' + slaveId + '" </form> <br>' +
-    '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>'
-  let body = createStatus(slaveId, slave.status) + description
+  let $header = $('<div>').addClass('header')
+  let $icon = $('<i>').addClass('disk green outline icon')
+  let $title = $('<span>').text(slave.ip + ':' + slave.port)
+  let $description = $('  <form class="ui form">' +
+                            '<div class="field">' +
+                              '<input type="number" required class="iteration" placeholder="Number of iterations">' +
+                            '</div> ' +
+                            '<input type="hidden" name="slaveId" value="' + slaveId + '">' +
+                          '</form>')
+  let $body = $('<div>').append(createStatus(slaveId, slave.status), $description)
   let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
-  let content = header + body
   stopButton.hide()
-  return $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append(content)).append(buttons)
+  $header.append($icon, $title)
+  let $card = $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append($header, $body)).append(buttons)
+  return $card
 }
 
 function createStatus (slaveId, status) {
@@ -71,18 +74,29 @@ function createStatus (slaveId, status) {
   let $status
   switch (status) {
     case 'available':
-      $status = '<div class="meta" id="meta-' + slaveId + '"> Available </div>'
+      if ($('#meta-' + slaveId).length) {
+        $('#meta-' + slaveId).empty().text('Availaaaable')
+      } else {
+        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).text('Available')
+      }
       break
     case 'executing':
-      $status = '<div class="meta" id="meta-' + slaveId + '"> Executing </div>'
+      if ($('#meta-' + slaveId).length) {
+        $('#meta-' + slaveId).empty().text('Executing')
+      } else {
+        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).text('Executing')
+      }
       break
     case 'finish':
-      console.log('finish')
-      let link = $('<span>').text('Check the statistics')
-      let info = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
-      $('#meta-' + slaveId).empty().append(info, link)
-      link.click(function () {
-        window.location = '/chart'
+      let $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
+      let $analytics = $('<span  class="statistics">').text('Check the statistics')
+      if ($('#meta-' + slaveId).length) {
+        $('#meta-' + slaveId).empty().append($meta, $analytics)
+      } else {
+        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($meta, $analytics)
+      }
+      $('body').on('click', '.statistics', function () {
+        window.location.assign('/chart')
       })
       break
     default:
