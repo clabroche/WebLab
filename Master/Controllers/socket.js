@@ -14,8 +14,9 @@ let socket = (io) => {
     })
     socket.on('algorithmResult', (data) => {
       slaves.pushResult(data)
+      slaves.changeStatus(data.slaveId, 'finish')
       console.log(slaves.get(data.slaveId))
-      socket.broadcast.emit('displayResult', data)
+      socket.broadcast.emit('displayResult', slaves.get(data.slaveId))
     })
     socket.on('clientStoppedVM', (slaveId) => {
       socket.broadcast.emit('stopVM', slaveId)

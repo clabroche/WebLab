@@ -64,14 +64,8 @@ socket.on('displayResult', (data) => {
   if (data.result.length === 0) {
     return
   }
-  let link = $('<span>').text('Check the statistics')
-  let info = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
-  if ($('#meta-' + data.slaveId).val() !== info) {
-    $('#meta-' + data.slaveId).empty().append(info, link)
-  }
-  link.click(function () {
-    window.location = '/chart'
-  })
+  // create finish status
+  createStatus(data.id, data.status)
 })
 
 /**

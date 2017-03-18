@@ -56,11 +56,37 @@ function createHTMLCard (serverName, slave) {
     '<div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> ' +
     '<input type="hidden" name="slaveId" value="' + slaveId + '" </form> <br>' +
     '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>'
-  let body = '<div class="meta" id="meta-' + slaveId + '"> Available </div>' + description
+  let body = createStatus(slaveId, slave.status) + description
   let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
   let content = header + body
   stopButton.hide()
   return $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append(content)).append(buttons)
+}
+
+function createStatus (slaveId, status) {
+  console.log('createStatus')
+  let $status
+  switch (status) {
+    case 'available':
+      $status = '<div class="meta" id="meta-' + slaveId + '"> Available </div>'
+      break
+    case 'executing':
+      $status = '<div class="meta" id="meta-' + slaveId + '"> Executing </div>'
+      break
+    case 'finish':
+      console.log('finish')
+      let link = $('<span>').text('Check the statistics')
+      let info = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
+      $('#meta-' + slaveId).empty().append(info, link)
+      link.click(function () {
+        window.location = '/chart'
+      })
+      break
+    default:
+
+  }
+
+  return $status
 }
