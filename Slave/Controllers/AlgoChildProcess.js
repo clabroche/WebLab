@@ -29,13 +29,9 @@ process.on('message', (m) => {
       let input = inputValue.split('=')
       sandbox[input[0]] = input[1]
     })
-    console.log(sandbox)
     for (let i = 0; i < parseInt(m.iteration); i++) {
       try {
         perfy.start('rendering')
-        if (!m.chainIterations) {
-          sandbox = {}
-        }
 
         const script = new VM.Script(m.algorithm)
 

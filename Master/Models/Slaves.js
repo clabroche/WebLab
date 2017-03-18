@@ -19,16 +19,12 @@ let Slaves = function () {
       return slaveResult
     },
     pushResult (data) {
-      console.log('push')
       slaves.forEach(slave => {
         if (slave.id === data.slaveId) {
-          console.log(slaves)
           if (slave.result === undefined) {
             slave.result = []
           }
           slave.result.push(data.result)
-          console.log('==================')
-          console.log(slaves)
         }
       })
     },

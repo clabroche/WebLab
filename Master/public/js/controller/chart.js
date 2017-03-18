@@ -1,7 +1,6 @@
 $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
   let data = {}
   let iterations = []
-  console.log(json.slaves)
   // create array for output
   $.each(json.slaves, function (index, slave) {
     $.each(json.algo, function (index, output) {
@@ -23,13 +22,9 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
 })
 
 function createChart (slaveId, data, iterations) {
-  console.log(slaveId)
-  console.log(data)
-  console.log($('.containerChart'))
   $('.containerChart').append('<h3>' + slaveId + '</h3><canvas id="chart-' + slaveId + '" width="400px" height="120px"></canvas><br><br>')
   let datasets = []
   $.each(data, function (index, el) {
-    console.log(el)
     datasets.push({
       label: index,
       data: el,

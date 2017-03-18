@@ -26,8 +26,7 @@ let AlgoController = class AlgoController {
           output: algo.getOutput(),
           input: algo.getInput(),
           iteration: this.req.body.iteration,
-          slaveId: this.req.body.slaveId,
-          chainIterations: this.req.body.chainIterations
+          slaveId: this.req.body.slaveId
         },
         uri: 'http://' + slave.ip + ':' + slave.port + '/launchAlgo',
         json: true // Automatically stringifies the body to JSON

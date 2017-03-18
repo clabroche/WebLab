@@ -60,11 +60,7 @@ function createHTMLCard (serverName, slave) {
                             '<input type="hidden" name="slaveId" value="' + slaveId + '">' +
                           '</form>' +
                           '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>')
-  let $chainIterations = $('<div class="ui checkbox">' +
-                            '<input id="chainIterations-' + slaveId + '" name="chainIterations" type="checkbox">' +
-                            '<label>Chain iterations</label>' +
-                          '</div>')
-  let $body = $('<div>').append(createStatus(slaveId, slave.status), $description, $chainIterations)
+  let $body = $('<div>').append(createStatus(slaveId, slave.status), $description)
   let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)

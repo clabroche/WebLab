@@ -28,8 +28,7 @@ let AlgoController = class AlgoController {
       output: this.req.body.output,
       input: this.req.body.input,
       algorithm: JSON.parse(this.req.body.algo),
-      iteration: this.req.body.iteration,
-      chainIterations: this.req.body.chainIterations
+      iteration: this.req.body.iteration
     })
     this.child.on('message', (m) => {
       let client = socket.connect('http://localhost:8081')
