@@ -58,10 +58,11 @@ function createHTMLCard (serverName, slave) {
                               '<input type="number" required class="iteration" placeholder="Number of iterations">' +
                             '</div> ' +
                             '<input type="hidden" name="slaveId" value="' + slaveId + '">' +
-                          '</form>')
+                          '</form>' +
+                          '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>')
   let $body = $('<div>').append(createStatus(slaveId, slave.status), $description)
   let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
-  let runButton = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
+  let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
   stopButton.hide()
   $header.append($icon, $title)
@@ -70,7 +71,6 @@ function createHTMLCard (serverName, slave) {
 }
 
 function createStatus (slaveId, status) {
-  console.log('createStatus')
   let $status
   switch (status) {
     case 'available':

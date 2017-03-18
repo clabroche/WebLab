@@ -81,7 +81,7 @@ $('#uploadAlgo').click(() => {
  * Function to render an algorithm
  */
 $('body').on('click', '.launch', function (event) {
-  let slaveId = $(this).parents().find('form').find('input:hidden').val()
+  let slaveId = $(this).prop('id')
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
   let stopButton = $('#stop-' + slaveId)
