@@ -7,8 +7,3 @@
 sin=Math.sin(i)
 cos=Math.cos(i)
 i=Number(i)+0.4
-pause(100)
-function pause(milliseconds) {
-	var dt = new Date();
-	while ((new Date()) - dt <= milliseconds) { /* Do nothing */ }
-}

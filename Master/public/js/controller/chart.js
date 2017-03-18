@@ -6,6 +6,8 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
     $.each(json.algo, function (index, output) {
       data[output] = []
     })
+    console.log(slave.result)
+    slave.result = slave.result.sort(sortByIterations)
     $.each(slave.result, function (index, result) {
       $.each(result, function (index, variable) {
         if (index == 'iterations') {
@@ -58,4 +60,8 @@ function getRandomColor () {
     return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.4)'
   }
   throw new Error('Bad Hex')
+}
+
+function sortByIterations (key1, key2) {
+  return key1.iterations > key2.iterations
 }
