@@ -2,6 +2,7 @@
  * Function to add a Slave to the HTML Page
  */
 function addSlave (slaveObject, state) {
+  console.log(slaveObject)
   if (!$('.' + slaveObject.id).length) {
     let serverName = 'Server ' + slaveObject.ip + ':' + slaveObject.port
     let icon = $('<i>').addClass('ui disk outline icon')

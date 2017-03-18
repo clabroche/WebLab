@@ -12,10 +12,10 @@
         <script src="/js/lib/jquery.min.js"></script>
         <!-- Semantic -->
         {% block stylesheets %}
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css"/>
+          <link rel="stylesheet" href="/stylesheets/semantic.min.css"/>
           <link rel="stylesheet" href="/stylesheets/css/app.css"/>
-          <link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
-          <link rel="stylesheet" href="https://codemirror.net/addon/hint/show-hint.css">
+          <link rel="stylesheet" href="/stylesheets/codemirror.css">
+          <link rel="stylesheet" href="/stylesheets/show-hint.css">
         {% endblock %}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -38,7 +38,7 @@
         {% endblock %}
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
+        <script src="/js/lib/semantic.min.js"></script>
         <script src="/js/lib/bootstrap.min.js"></script>
         <script src="/js/lib/socket.io.min.js"></script>
         {% if socket is defined %}
