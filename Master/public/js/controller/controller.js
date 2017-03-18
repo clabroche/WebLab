@@ -84,6 +84,7 @@ $('body').on('click', '.launch', function (event) {
   let slaveId = $(this).prop('id')
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
+  let chainIterations = $('#chainIterations-' + slaveId).is(':checked')
   let stopButton = $('#stop-' + slaveId)
   $(this).fadeOut(400, () => {
     let that = $(this)
@@ -97,6 +98,7 @@ $('body').on('click', '.launch', function (event) {
   $.post('/launchAlgo', {
     server: slaveId,
     iteration: $(this).parents().find('.iteration').val(),
-    slaveId: slaveId
+    slaveId: slaveId,
+    chainIterations: chainIterations
   })
 })
