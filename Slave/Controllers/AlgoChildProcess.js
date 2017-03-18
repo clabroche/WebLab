@@ -49,7 +49,6 @@ process.on('message', (m) => {
             }
           })
         })
-        sandbox = sandboxResult
         sandboxResult.iterations = i
         process.send({
           result: sandboxResult
