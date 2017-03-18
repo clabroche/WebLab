@@ -24,10 +24,18 @@ process.on('message', (m) => {
     let result = 'Undefined'
     let iterations = []
     let time = []
+    let sandbox = {}
+    eachr(m.input, function (inputValue, inputKey) {
+      let input = inputValue.split('=')
+      sandbox[input[0]] = input[1]
+    })
+    console.log(sandbox)
     for (let i = 0; i < parseInt(m.iteration); i++) {
       try {
         perfy.start('rendering')
-        const sandbox = {}
+        if (!m.chainIterations) {
+          sandbox = {}
+        }
 
         const script = new VM.Script(m.algorithm)
 
@@ -45,6 +53,7 @@ process.on('message', (m) => {
             }
           })
         })
+        sandbox = sandboxResult
         sandboxResult.iterations = i
         process.send({
           result: sandboxResult
