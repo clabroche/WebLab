@@ -1,14 +1,11 @@
 {% extends 'layout.twig' %}
 {% block body %}
-<div id="result" class="ui main container" style="display: block;">
-  <h1><a id="backToDashboard"><i class="teal arrow left icon"></i></a>Result of the algorithm</h1>
-  <div class="containerChart">
+  <div id="result" class="ui main container" style="display: block;">
+    <h1><a href="/"><i class="teal arrow left icon"></i></a>Result of the algorithm</h1>
+    <div class="containerChart">
 
+    </div>
+    <script src="./js/lib/chart.min.js"></script>
+    <script src="./js/controller/chart.js"></script>
   </div>
-  <script src="./js/lib/chart.min.js"></script>
-  <script src="./js/controller/chart.js"></script>
-</div>
-    {% block result %}
-        {% include 'app/result.twig' %}
-    {% endblock %}
 {% endblock %}
