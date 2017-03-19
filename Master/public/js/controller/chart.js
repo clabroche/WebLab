@@ -6,7 +6,7 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
     $.each(json.algo, function (index, output) {
       data[output] = []
     })
-    console.log(slave.result)
+    slave.result = slave.result.filter(function (n) { return n !== null })
     slave.result = slave.result.sort(sortByIterations)
     $.each(slave.result, function (index, result) {
       $.each(result, function (index, variable) {

@@ -35,11 +35,12 @@ let Slaves = function () {
         }
       })
     },
-    setIterations (slaveId, iterations) {
-      console.log(slaveId + ' ' + iterations)
+    reset (slaveId, iterations) {
       slaves.forEach(slave => {
         if (slave.id === slaveId) {
+          delete slave['result']
           slave.iterations = iterations
+          console.log('reset')
         }
       })
     },

@@ -18,8 +18,9 @@ let AlgoController = class AlgoController {
 
   launch () {
     let slave = slaves.get(this.req.body.server)
+    let slaveId = slave.ip.split('.').join('') + slave.port
     if (slave !== undefined) {
-      slaves.setIterations(slave.ip.split('.').join('') + slave.port, this.req.body.iteration)
+      slaves.reset(slaveId, this.req.body.iteration)
       let options = {
         method: 'POST',
         body: {

@@ -13,6 +13,7 @@ let socket = (io) => {
       socket.broadcast.emit('displayError', data)
     })
     socket.on('algorithmResult', (data) => {
+      console.log(data)
       slaves.pushResult(data)
       slaves.changeStatus(data.slaveId, 'executing')
       socket.broadcast.emit('displayResult', slaves.get(data.slaveId))
