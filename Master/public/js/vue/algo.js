@@ -74,17 +74,15 @@ function createHTMLCard (serverName, slave) {
 function changeStatus (slaveId, status, progression) {
   let $status
   let $meta
-  let $analytics
+  let $available = $('<span class="ui tiny header blue">Available</span><i class="sign in small blue icon"></i>')
+  let $executing = $('<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>')
+  let $stopped = $('<span>').addClass('ui tiny header red').text('Stopped').add($('<i>').addClass('red unlinkify small icon'))
+  let $analytics = $('<span  class="statistics">').text('Check the statistics')
   switch (status) {
     case 'available':
-      if ($('#meta-' + slaveId).length) {
-        $('#meta-' + slaveId).empty().text('Availaaaable')
-      } else {
-        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).text('Available')
-      }
+      $status = changeMeta(slaveId, $available)
       break
     case 'executing':
-      let $executing = $('<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>')
       let $progressContainer = $('.progressContainer-' + slaveId)
       if ($('.progress.' + slaveId).length) {
         let $progress = $('.ui.active.progress.' + slaveId)
@@ -94,10 +92,7 @@ function changeStatus (slaveId, status, progression) {
         })
         $progress.find('.progress').text(progression)
       } else {
-        let $analytics = $('<span  class="statistics">').text('Check the statistics')
-        if ($('#meta-' + slaveId).length) { $('#meta-' + slaveId).empty().append($executing, $analytics) } else {
-          $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($executing, $analytics)
-        }
+        $status = changeMeta(slaveId, [$executing, $analytics])
         let $progress = $('<div>').addClass('ui active progress ' + slaveId).attr('data-percent', progression)
         let $bar = $('<div>').addClass('bar')
         let $textProgress = $('<div>').addClass('progress').text('0%')
@@ -110,30 +105,14 @@ function changeStatus (slaveId, status, progression) {
       break
     case 'finish':
       $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
-      $analytics = $('<span  class="statistics">').text('Check the statistics')
       $('.progressContainer-' + slaveId).empty()
-      if ($('#meta-' + slaveId).length) {
-        $('#meta-' + slaveId).empty().append($meta, $analytics)
-      } else {
-        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($meta, $analytics)
-      }
-      $('body').on('click', '.statistics', function () {
-        window.location.assign('/chart')
-      })
+      $status = changeMeta(slaveId, [$meta, $analytics])
       $('.' + slaveId).find('.stop').fadeOut(400)
       $('.' + slaveId).find('.launch').fadeIn(400)
       break
     case 'stopped':
-      $meta = $('<span>').addClass('ui tiny header red').text('Stopped').add($('<i>').addClass('red unlinkify small icon'))
       $('.progressContainer-' + slaveId).empty()
-      if ($('#meta-' + slaveId).length) {
-        $('#meta-' + slaveId).empty().append($meta)
-      } else {
-        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($meta)
-      }
-      $('body').on('click', '.statistics', function () {
-        window.location.assign('/chart')
-      })
+      $status = changeMeta(slaveId, $stopped)
       $('.' + slaveId).find('.stop').fadeOut(400)
       $('.' + slaveId).find('.launch').fadeIn(400)
       break
@@ -141,5 +120,15 @@ function changeStatus (slaveId, status, progression) {
 
   }
 
+  return $status
+}
+
+function changeMeta (slaveId, $elements) {
+  let $status
+  if ($('#meta-' + slaveId).length) {
+    $('#meta-' + slaveId).empty().append($elements)
+  } else {
+    $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($elements)
+  }
   return $status
 }

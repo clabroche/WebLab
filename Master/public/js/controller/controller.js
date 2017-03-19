@@ -110,3 +110,6 @@ $('body').on('click', '.stop', function (event) {
   changeStatus(slaveId, 'stopped')
   socket.emit('clientStoppedVM', slaveId)
 })
+$('body').on('click', '.statistics', function () {
+  window.location.assign('/chart')
+})
