@@ -61,6 +61,9 @@ process.on('message', (m) => {
         return
       }
     }
+    process.send({
+      end: true
+    })
   } else {
     process.send({ result: 'Error, did not get all the parameters' })
   }

@@ -65,6 +65,17 @@ socket.on('displayResult', (data) => {
     return
   }
   // create finish status
+  createStatus(data.id, data.status, '70%')
+})
+
+/**
+ * Function to display the result of an algorithm
+ */
+socket.on('displayFinish', (data) => {
+  if (data.result.length === 0) {
+    return
+  }
+  // create finish status
   createStatus(data.id, data.status)
 })
 

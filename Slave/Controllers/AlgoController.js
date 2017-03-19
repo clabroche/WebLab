@@ -52,6 +52,10 @@ let AlgoController = class AlgoController {
             iterations: m.iterations,
             time: m.time
           })
+        } else if (m.end != null) {
+          client.emit('algorithmFinish', {
+            slaveId: this.id
+          })
         }
       })
     })
