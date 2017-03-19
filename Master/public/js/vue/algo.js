@@ -105,6 +105,7 @@ function createStatus (slaveId, status, progression) {
     case 'finish':
       let $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
       let $analytics = $('<span  class="statistics">').text('Check the statistics')
+      $('.progressContainer').empty()
       if ($('#meta-' + slaveId).length) {
         $('#meta-' + slaveId).empty().append($meta, $analytics)
       } else {
