@@ -1,6 +1,7 @@
 let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
 socket.on('slaveInit', (init) => {
+  editor.getDoc().setValue(init.state)
   init.slaves.forEach(slave => {
     addSlave(slave, init.state)
   })
