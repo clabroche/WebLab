@@ -62,7 +62,7 @@ function createHTMLCard (serverName, slave) {
                           '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>')
   let $progressContainer = $('<div>').addClass('progressContainer-' + slaveId)
   let $body = $('<div>').append(createStatus(slaveId, slave.status), $description)
-  let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
+  let stopButton = $('<div>').addClass('ui basic red button stop').prop('id', slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
   stopButton.hide()
@@ -73,6 +73,8 @@ function createHTMLCard (serverName, slave) {
 
 function createStatus (slaveId, status, progression) {
   let $status
+  let $meta
+  let $analytics
   switch (status) {
     case 'available':
       if ($('#meta-' + slaveId).length) {
@@ -104,10 +106,12 @@ function createStatus (slaveId, status, progression) {
 
         $progressContainer.append($progress.append($bar.append($textProgress), $label))
       }
+      $('.' + slaveId).find('.stop').fadeIn(400)
+      $('.' + slaveId).find('.launch').fadeOut(400)
       break
     case 'finish':
-      let $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
-      let $analytics = $('<span  class="statistics">').text('Check the statistics')
+      $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
+      $analytics = $('<span  class="statistics">').text('Check the statistics')
       $('.progressContainer-' + slaveId).empty()
       if ($('#meta-' + slaveId).length) {
         $('#meta-' + slaveId).empty().append($meta, $analytics)
@@ -117,6 +121,22 @@ function createStatus (slaveId, status, progression) {
       $('body').on('click', '.statistics', function () {
         window.location.assign('/chart')
       })
+      $('.' + slaveId).find('.stop').fadeOut(400)
+      $('.' + slaveId).find('.launch').fadeIn(400)
+      break
+    case 'stopped':
+      $meta = $('<span>').addClass('ui tiny header red').text('Stopped').add($('<i>').addClass('red unlinkify small icon'))
+      $('.progressContainer-' + slaveId).empty()
+      if ($('#meta-' + slaveId).length) {
+        $('#meta-' + slaveId).empty().append($meta)
+      } else {
+        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($meta)
+      }
+      $('body').on('click', '.statistics', function () {
+        window.location.assign('/chart')
+      })
+      $('.' + slaveId).find('.stop').fadeOut(400)
+      $('.' + slaveId).find('.launch').fadeIn(400)
       break
     default:
 

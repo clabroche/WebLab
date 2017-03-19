@@ -67,8 +67,6 @@ socket.on('displayResult', (data) => {
   }
   let iteration = data.result.length
   let percent = (iteration * 100) / data.iterations
-  console.log(iteration + ' ' + data.iterations)
-  console.log(percent)
   // create finish status
   createStatus(data.id, data.status, percent + '%')
 })
@@ -101,19 +99,16 @@ $('body').on('click', '.launch', function (event) {
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
   let iteration = $(this).parents('.' + slaveId).find('.iteration').val()
-  let stopButton = $('#stop-' + slaveId)
-  $(this).fadeOut(400, () => {
-    let that = $(this)
-    stopButton.fadeIn(400).click(() => {
-      $('#meta-' + slaveId).empty().append('<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>')
-      socket.emit('clientStoppedVM', slaveId)
-      that.fadeIn(400)
-      stopButton.fadeOut(400)
-    })
-  })
   $.post('/launchAlgo', {
     server: slaveId,
     iteration: iteration,
     slaveId: slaveId
   })
+})
+
+$('body').on('click', '.stop', function (event) {
+  let slaveId = $(this).prop('id')
+  console.log(slaveId)
+  createStatus(slaveId, 'stopped')
+  socket.emit('clientStoppedVM', slaveId)
 })

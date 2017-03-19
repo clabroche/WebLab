@@ -24,6 +24,7 @@ let socket = (io) => {
       socket.broadcast.emit('displayFinish', slaves.get(data.slaveId))
     })
     socket.on('clientStoppedVM', (slaveId) => {
+      slaves.changeStatus(slaveId, 'stopped')
       socket.broadcast.emit('stopVM', slaveId)
     })
     socket.on('clientSlaveInit', () => {
