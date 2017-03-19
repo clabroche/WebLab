@@ -60,7 +60,7 @@ function createHTMLCard (serverName, slave) {
                             '<input type="hidden" name="slaveId" value="' + slaveId + '">' +
                           '</form>' +
                           '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>')
-  let $progressContainer = $('<div>').addClass('progressContainer')
+  let $progressContainer = $('<div>').addClass('progressContainer-' + slaveId)
   let $body = $('<div>').append(createStatus(slaveId, slave.status), $description)
   let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
@@ -83,24 +83,26 @@ function createStatus (slaveId, status, progression) {
       break
     case 'executing':
       let $executing = $('<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>')
-      if ($('.notched,orange,circle,loading,small,icon').length) {
+      let $progressContainer = $('.progressContainer-' + slaveId)
+      console.log('ljkkljklj' + $('.progress.' + slaveId).length)
+      if ($('.progress.' + slaveId).length) {
         let $progress = $('.ui.active.progress.' + slaveId)
         $progress.children('.bar').css({
           'width': progression,
           'transition-duration': '300ms'
         })
         $progress.find('.progress').text(progression)
-        break
-      }
-      if ($('#meta-' + slaveId).length) { $('#meta-' + slaveId).empty().append($executing) } else {
-        $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($executing)
-      }
-      let $progress = $('<div>').addClass('ui active progress ' + slaveId).attr('data-percent', progression)
-      let $bar = $('<div>').addClass('bar')
-      let $textProgress = $('<div>').addClass('progress').text('0%')
-      let $label = $('<div>').addClass('label').text('Progression')
+      } else {
+        if ($('#meta-' + slaveId).length) { $('#meta-' + slaveId).empty().append($executing) } else {
+          $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($executing)
+        }
+        let $progress = $('<div>').addClass('ui active progress ' + slaveId).attr('data-percent', progression)
+        let $bar = $('<div>').addClass('bar')
+        let $textProgress = $('<div>').addClass('progress').text('0%')
+        let $label = $('<div>').addClass('label').text('Progression')
 
-      $('.progressContainer').append($progress.append($bar.append($textProgress), $label))
+        $progressContainer.append($progress.append($bar.append($textProgress), $label))
+      }
       break
     case 'finish':
       let $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
