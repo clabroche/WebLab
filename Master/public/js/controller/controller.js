@@ -1,6 +1,7 @@
 let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
 socket.on('slaveInit', (init) => {
+  console.log(init.state)
   init.slaves.forEach(slave => {
     addSlave(slave, init.state)
   })
@@ -10,8 +11,8 @@ socket.emit('clientSlaveInit')
 /**
  * When a slave connects to the application
  */
-socket.on('slaveConnection', (slave) => {
-  addSlave(slave)
+socket.on('slaveConnection', (init) => {
+  addSlave(init.slave, init.state)
 })
 
 /**

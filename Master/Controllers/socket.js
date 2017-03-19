@@ -42,7 +42,11 @@ let socket = (io) => {
         status: 'available'
       }
       slaves.addSlave(slave)
-      socket.broadcast.emit('slaveConnection', slave)
+      let init = {
+        slave: slave,
+        state: algo.get()
+      }
+      socket.broadcast.emit('slaveConnection', init)
       socket.on('disconnect', () => {
         slaves.remove(slave)
         socket.broadcast.emit('slaveDisconnect', slave)
