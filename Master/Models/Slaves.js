@@ -40,7 +40,6 @@ let Slaves = function () {
         if (slave.id === slaveId) {
           delete slave['result']
           slave.iterations = iterations
-          console.log('reset')
         }
       })
     },
