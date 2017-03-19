@@ -65,9 +65,11 @@ socket.on('displayResult', (data) => {
     return
   }
   let iteration = data.result.length
-  console.log(data)
+  let percent = (iteration * 100) / data.iterations
+  console.log(iteration + ' ' + data.iterations)
+  console.log(percent)
   // create finish status
-  createStatus(data.id, data.status, '70%')
+  createStatus(data.id, data.status, percent + '%')
 })
 
 /**
