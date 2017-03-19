@@ -67,7 +67,7 @@ socket.on('displayResult', (data) => {
   let iteration = data.result.length
   let percent = (iteration * 100) / data.iterations
   // create finish status
-  createStatus(data.id, data.status, percent + '%')
+  changeStatus(data.id, data.status, percent + '%')
 })
 
 /**
@@ -78,7 +78,7 @@ socket.on('displayFinish', (data) => {
     return
   }
   // create finish status
-  createStatus(data.id, data.status)
+  changeStatus(data.id, data.status)
 })
 
 /**
@@ -107,6 +107,6 @@ $('body').on('click', '.launch', function (event) {
 
 $('body').on('click', '.stop', function (event) {
   let slaveId = $(this).prop('id')
-  createStatus(slaveId, 'stopped')
+  changeStatus(slaveId, 'stopped')
   socket.emit('clientStoppedVM', slaveId)
 })

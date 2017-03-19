@@ -61,7 +61,7 @@ function createHTMLCard (serverName, slave) {
                           '</form>' +
                           '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>')
   let $progressContainer = $('<div>').addClass('progressContainer-' + slaveId)
-  let $body = $('<div>').append(createStatus(slaveId, slave.status), $description)
+  let $body = $('<div>').append(changeStatus(slaveId, slave.status), $description)
   let stopButton = $('<div>').addClass('ui basic red button stop').prop('id', slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
@@ -71,7 +71,7 @@ function createHTMLCard (serverName, slave) {
   return $card
 }
 
-function createStatus (slaveId, status, progression) {
+function changeStatus (slaveId, status, progression) {
   let $status
   let $meta
   let $analytics
