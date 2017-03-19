@@ -86,7 +86,6 @@ function createStatus (slaveId, status, progression) {
     case 'executing':
       let $executing = $('<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>')
       let $progressContainer = $('.progressContainer-' + slaveId)
-      console.log('ljkkljklj' + $('.progress.' + slaveId).length)
       if ($('.progress.' + slaveId).length) {
         let $progress = $('.ui.active.progress.' + slaveId)
         $progress.children('.bar').css({

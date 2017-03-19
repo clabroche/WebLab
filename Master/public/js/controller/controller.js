@@ -1,7 +1,6 @@
 let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
 socket.on('slaveInit', (init) => {
-  console.log(init.state)
   init.slaves.forEach(slave => {
     addSlave(slave, init.state)
   })
@@ -108,7 +107,6 @@ $('body').on('click', '.launch', function (event) {
 
 $('body').on('click', '.stop', function (event) {
   let slaveId = $(this).prop('id')
-  console.log(slaveId)
   createStatus(slaveId, 'stopped')
   socket.emit('clientStoppedVM', slaveId)
 })

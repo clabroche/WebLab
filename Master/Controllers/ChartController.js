@@ -16,7 +16,6 @@ let chartController = class ChartController {
   }
 
   result () {
-    console.log(slaves.all())
     this.res.send(JSON.stringify({slaves: slaves.all(), algo: algo.getOutput()}))
   }
 }
