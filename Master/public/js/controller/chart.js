@@ -6,6 +6,7 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
     $.each(json.algo, function (index, output) {
       data[output] = []
     })
+
     slave.result = slave.result.filter(function (n) { return n !== null })
     slave.result = slave.result.sort(sortByIterations)
     $.each(slave.result, function (index, result) {
@@ -17,14 +18,14 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
         }
       })
     })
-    createChart(slave.id, data, iterations)
+    createChart(slave.id, data, iterations, slave.ip + ':' + slave.port)
     iterations = []
     data = {}
   })
 })
 
-function createChart (slaveId, data, iterations) {
-  $('.containerChart').append('<h3>' + slaveId + '</h3><canvas id="chart-' + slaveId + '" width="400px" height="120px"></canvas><br><br>')
+function createChart (slaveId, data, iterations, name) {
+  $('.containerChart').append('<h3>' + name + '</h3><canvas id="chart-' + slaveId + '" width="400px" height="120px"></canvas><br><br>')
   let datasets = []
   $.each(data, function (index, el) {
     datasets.push({
