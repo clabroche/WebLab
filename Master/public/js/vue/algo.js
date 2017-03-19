@@ -93,8 +93,9 @@ function createStatus (slaveId, status, progression) {
         })
         $progress.find('.progress').text(progression)
       } else {
-        if ($('#meta-' + slaveId).length) { $('#meta-' + slaveId).empty().append($executing) } else {
-          $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($executing)
+        let $analytics = $('<span  class="statistics">').text('Check the statistics')
+        if ($('#meta-' + slaveId).length) { $('#meta-' + slaveId).empty().append($executing, $analytics) } else {
+          $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($executing, $analytics)
         }
         let $progress = $('<div>').addClass('ui active progress ' + slaveId).attr('data-percent', progression)
         let $bar = $('<div>').addClass('bar')
