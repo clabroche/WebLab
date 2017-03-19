@@ -64,6 +64,8 @@ socket.on('displayResult', (data) => {
   if (data.result.length === 0) {
     return
   }
+  let iteration = data.result.length
+  console.log(data)
   // create finish status
   createStatus(data.id, data.status, '70%')
 })

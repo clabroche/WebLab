@@ -35,6 +35,14 @@ let Slaves = function () {
         }
       })
     },
+    setIterations (slaveId, iterations) {
+      console.log(slaveId + ' ' + iterations)
+      slaves.forEach(slave => {
+        if (slave.id === slaveId) {
+          slave.iterations = iterations
+        }
+      })
+    },
     available () {
       let availableSlaves = []
       slaves.forEach(slave => {
