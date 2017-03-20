@@ -31,11 +31,11 @@
     {% block result %}
         {% include 'app/result.twig' %}
     {% endblock %}
-    <script src="/js/lib/codemirror.js"></script>
-    <script src="/js/lib/javascript.js"></script>
-    <script src="/js/lib/show-hint.js"></script>
-    <script src="/js/lib/closebrackets.js"></script>
-    <script src="/js/lib/javascript-hint.js"></script>
+    <script src="/bower/codemirror/lib/codemirror.js"></script>
+    <script src="/bower/codemirror/mode/javascript/javascript.js"></script>
+    <script src="/bower/codemirror/addon/hint/show-hint.js"></script>
+    <script src="/bower/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="/bower/codemirror/addon/hint/javascript-hint.js"></script>
     <script type="text/javascript">
       let editor = CodeMirror.fromTextArea(document.getElementById("textAlgo"), {
         lineNumbers: true,
