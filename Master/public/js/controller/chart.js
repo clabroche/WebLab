@@ -1,3 +1,4 @@
+let configChart = []
 $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
   let data = {}
   let iterations = []
@@ -24,8 +25,40 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
   })
 })
 
+$('body').on('change', 'select', function () {
+  let self = this
+  let slaveId = this.id.split('-')[1]
+  $.each(configChart, function (index, el) {
+    if (el.slaveId === slaveId) {
+      $('#chart-' + slaveId).find('iframe').remove()
+      $('#chart-' + slaveId).find('canvas').replaceWith($('<canvas>').css({
+        width: '400px',
+        height: '120px'
+      }))
+      var ctx = $('#chart-' + slaveId).find('canvas')[0].getContext('2d')
+      var myChart = new Chart(ctx, {
+        type: self.value,
+        data: el.data
+      })
+    }
+  })
+})
 function createChart (slaveId, data, iterations, name) {
-  $('.containerChart').append('<h3>' + name + '</h3><canvas id="chart-' + slaveId + '" width="400px" height="120px"></canvas><br><br>')
+  let $chart = $('<div>').addClass('chart').prop('id', 'chart-' + slaveId)
+  let $title = $('<h3>').text(name)
+  let $canvas = $('<canvas>').css({
+    width: '400px',
+    height: '120px'
+  })
+  let $chooseGraph = $('<select>').prop('id', 'choose-' + slaveId).addClass('ui fluid selection dropdown chooser')
+                      .append(
+                        $('<option>').prop('value', 'line').text('line'),
+                        $('<option>').prop('value', 'bar').text('bar'),
+                        $('<option>').prop('value', 'radar').text('radar'),
+                        $('<option>').prop('value', 'pie').text('pie'),
+                        $('<option>').prop('value', 'bubble').text('bubble')
+                      )
+  $('.containerChart').append($chart.append($title, $canvas, $chooseGraph))
   let datasets = []
   $.each(data, function (index, el) {
     datasets.push({
@@ -34,11 +67,16 @@ function createChart (slaveId, data, iterations, name) {
       backgroundColor: getRandomColor()
     })
   })
+
   let dataChart = {
     labels: iterations,
     datasets: datasets
   }
-  var ctx = document.getElementById('chart-' + slaveId).getContext('2d')
+  configChart.push({
+    slaveId: slaveId,
+    data: dataChart
+  })
+  var ctx = $('#chart-' + slaveId).find('canvas')[0].getContext('2d')
   var myChart = new Chart(ctx, {
     type: 'line',
     data: dataChart
