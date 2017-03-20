@@ -50,17 +50,85 @@ function createHTMLCard (serverName, slave) {
   let slaveId = slave.ip + ':' + slave.port
   slaveId = slaveId.split('.').join('')
   slaveId = slaveId.split(':').join('')
-  let headerContent = '<i class="disk green outline icon"></i> ' + serverName
-  let header = '<div class="header">' + headerContent + '</div>'
-  let description = '<div class="description"> <form class="ui form"> ' +
-    '<div class="field"> <input type="number" required class="iteration" placeholder="Number of iterations"> </div> ' +
-    '<input type="hidden" name="slaveId" value="' + slaveId + '" </form> <br>' +
-    '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>'
-  let body = '<div class="meta" id="meta-' + slaveId + '"> Available </div>' + description
-  let stopButton = $('<div>').addClass('ui basic red button stop-vm').prop('id', 'stop-' + slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
-  let runButton = '<div class="ui basic blue button launch" id="' + slave.ip + ':' + slave.port + '"> Run<i class="caret right icon"></i> </div>'
+  let $header = $('<div>').addClass('header')
+  let $icon = $('<i>').addClass('disk green outline icon')
+  let $title = $('<span>').text(slave.ip + ':' + slave.port)
+  let $description = $('  <form class="ui form">' +
+                            '<div class="field">' +
+                              '<input type="number" required class="iteration" placeholder="Number of iterations">' +
+                            '</div> ' +
+                            '<input type="hidden" name="slaveId" value="' + slaveId + '">' +
+                          '</form>' +
+                          '<div class="output" id="output-' + slaveId + '"> $ > </div> <br/>')
+  let $progressContainer = $('<div>').addClass('progressContainer-' + slaveId)
+  let $body = $('<div>').append(changeStatus(slaveId, slave.status), $description)
+  let stopButton = $('<div>').addClass('ui basic red button stop').prop('id', slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
+  let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
   let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
-  let content = header + body
   stopButton.hide()
-  return $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append(content)).append(buttons)
+  $header.append($icon, $title)
+  let $card = $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append($header, $body, $progressContainer)).append(buttons)
+  return $card
+}
+
+function changeStatus (slaveId, status, progression) {
+  let $status
+  let $meta
+  let $available = $('<span class="ui tiny header blue">Available</span><i class="sign in small blue icon"></i>')
+  let $executing = $('<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>')
+  let $stopped = $('<span>').addClass('ui tiny header red').text('Stopped').add($('<i>').addClass('red unlinkify small icon'))
+  let $analytics = $('<span  class="statistics">').text('Check the statistics')
+  switch (status) {
+    case 'available':
+      $status = changeMeta(slaveId, $available)
+      break
+    case 'executing':
+      let $progressContainer = $('.progressContainer-' + slaveId)
+      if ($('.progress.' + slaveId).length) {
+        let $progress = $('.ui.active.progress.' + slaveId)
+        $progress.children('.bar').css({
+          'width': progression,
+          'transition-duration': '300ms'
+        })
+        $progress.find('.progress').text(progression)
+      } else {
+        $status = changeMeta(slaveId, [$executing, $analytics])
+        let $progress = $('<div>').addClass('ui active progress ' + slaveId).attr('data-percent', progression)
+        let $bar = $('<div>').addClass('bar')
+        let $textProgress = $('<div>').addClass('progress').text('0%')
+        let $label = $('<div>').addClass('label').text('Progression')
+
+        $progressContainer.append($progress.append($bar.append($textProgress), $label))
+      }
+      $('.' + slaveId).find('.stop').fadeIn(400)
+      $('.' + slaveId).find('.launch').fadeOut(400)
+      break
+    case 'finish':
+      $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
+      $('.progressContainer-' + slaveId).empty()
+      $status = changeMeta(slaveId, [$meta, $analytics])
+      $('.' + slaveId).find('.stop').fadeOut(400)
+      $('.' + slaveId).find('.launch').fadeIn(400)
+      break
+    case 'stopped':
+      $('.progressContainer-' + slaveId).empty()
+      $status = changeMeta(slaveId, $stopped)
+      $('.' + slaveId).find('.stop').fadeOut(400)
+      $('.' + slaveId).find('.launch').fadeIn(400)
+      break
+    default:
+
+  }
+
+  return $status
+}
+
+function changeMeta (slaveId, $elements) {
+  let $status
+  if ($('#meta-' + slaveId).length) {
+    $('#meta-' + slaveId).empty().append($elements)
+  } else {
+    $status = $('<div>').addClass('meta').prop('id', 'meta-' + slaveId).append($elements)
+  }
+  return $status
 }

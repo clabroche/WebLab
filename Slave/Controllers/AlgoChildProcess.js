@@ -3,6 +3,10 @@
  */
 const {NodeVM, VMScript} = require('vm2')
 const perfy = require('perfy')
+const util = require('util')
+const VM = require('vm')
+let eachr = require('util-each')
+
 let virtualMachine = new NodeVM({
   wrapper: 'none',
   require: {
@@ -20,16 +24,34 @@ process.on('message', (m) => {
     let result = 'Undefined'
     let iterations = []
     let time = []
+    let sandbox = {}
+    eachr(m.input, function (inputValue, inputKey) {
+      let input = inputValue.split('=')
+      sandbox[input[0]] = input[1]
+    })
     for (let i = 0; i < parseInt(m.iteration); i++) {
       try {
         perfy.start('rendering')
-        result = virtualMachine.run(new VMScript(m.algorithm))
+
+        const script = new VM.Script(m.algorithm)
+
+        const context = new VM.createContext(sandbox)
+
+        script.runInContext(context)
         iterations.push(result)
         let executionTime = perfy.end('rendering')
         time.push(executionTime.milliseconds)
-        process.send({ // To get previews
-          preview: result,
-          nthIteration: i
+        let sandboxResult = {}
+        eachr(sandbox, function (sandboxValue, sandboxKey) {
+          eachr(m.output, function (outputValue, outputKey) {
+            if (sandboxKey == outputValue) {
+              sandboxResult[outputValue] = sandboxValue
+            }
+          })
+        })
+        sandboxResult.iterations = i
+        process.send({
+          result: sandboxResult
         })
       } catch (error) {
         process.send({
@@ -40,10 +62,8 @@ process.on('message', (m) => {
       }
     }
     process.send({
-      result: result,
-      iterations: iterations,
-      time: time
-    }) // To get the final result
+      end: true
+    })
   } else {
     process.send({ result: 'Error, did not get all the parameters' })
   }

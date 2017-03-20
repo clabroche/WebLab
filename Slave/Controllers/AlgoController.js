@@ -14,7 +14,7 @@ let AlgoController = class AlgoController {
     this.req = req
     this.res = res
     this.next = next
-    this.id = 'Undefined',
+    this.id = 'Undefined'
     this.controller = new Controller(req, res, next)
     this.child = require('child_process').fork(`${__dirname}/AlgoChildProcess.js`)
   }
@@ -25,6 +25,8 @@ let AlgoController = class AlgoController {
   launch () {
     this.id = this.req.body.slaveId
     this.child.send({
+      output: this.req.body.output,
+      input: this.req.body.input,
       algorithm: JSON.parse(this.req.body.algo),
       iteration: this.req.body.iteration
     })
@@ -49,6 +51,10 @@ let AlgoController = class AlgoController {
             result: m.result,
             iterations: m.iterations,
             time: m.time
+          })
+        } else if (m.end != null) {
+          client.emit('algorithmFinish', {
+            slaveId: this.id
           })
         }
       })

@@ -8,3 +8,4 @@ jspm_packages
 .sass-cache
 *.css.map
 Master/public/stylesheets/css/app.css
+Master/public/bower

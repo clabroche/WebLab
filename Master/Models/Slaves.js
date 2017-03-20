@@ -9,15 +9,39 @@ let Slaves = function () {
     all () {
       return slaves
     },
-    get (server) {
-      server = server.split(':')
+    get (slaveId) {
       let slaveResult
       slaves.forEach(slave => {
-        if (slave.ip === server[0] && slave.port === Number(server[1])) {
+        if (slave.id === slaveId) {
           slaveResult = slave
         }
       })
       return slaveResult
+    },
+    pushResult (data) {
+      slaves.forEach(slave => {
+        if (slave.id === data.slaveId) {
+          if (slave.result === undefined) {
+            slave.result = []
+          }
+          slave.result.push(data.result)
+        }
+      })
+    },
+    changeStatus (slaveId, status) {
+      slaves.forEach(slave => {
+        if (slave.id === slaveId) {
+          slave.status = status
+        }
+      })
+    },
+    reset (slaveId, iterations) {
+      slaves.forEach(slave => {
+        if (slave.id === slaveId) {
+          delete slave['result']
+          slave.iterations = iterations
+        }
+      })
     },
     available () {
       let availableSlaves = []

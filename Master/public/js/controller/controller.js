@@ -1,6 +1,9 @@
 let socket = io('http://localhost:8081')
 // Recuperation des serveurs deja connecte
 socket.on('slaveInit', (init) => {
+  if (init.state) {
+    editor.getDoc().setValue(init.state)
+  }
   init.slaves.forEach(slave => {
     addSlave(slave, init.state)
   })
@@ -10,8 +13,8 @@ socket.emit('clientSlaveInit')
 /**
  * When a slave connects to the application
  */
-socket.on('slaveConnection', (slave) => {
-  addSlave(slave)
+socket.on('slaveConnection', (init) => {
+  addSlave(init.slave, init.state)
 })
 
 /**
@@ -61,117 +64,24 @@ socket.on('displayError', (data) => {
  * Function to display the result of an algorithm
  */
 socket.on('displayResult', (data) => {
-  if (data.iterations.length === 0) {
+  if (data.result.length === 0) {
     return
   }
-  let info = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
-  if (!isNaN(parseFloat(data.iterations[0])) && isFinite(data.iterations[0])) {
-    let link = $('<span>').text('Check the statistics').click(() => {
-      $('#dashboard').fadeOut(900, () => {
-        $('#result').css('display', 'hidden')
-        $('#result').fadeIn(900)
-        let ctx = $('#output').empty()
-        let labels = []
-        let values = []
-        let time = []
-        let nbIterations = data.iterations.length
-        if (nbIterations < 4) {
-          for (let i = 0; i < nbIterations; i++) {
-            labels.push('i = ' + i)
-            time.push(data.time[i])
-            values.push(data.iterations[i])
-          }
-        } else {
-          labels.push('i = 0')
-          time.push(data.time[0])
-          values.push(data.iterations[0])
-          let arrayRandom = []
-          for (let i = 1; i < 3; i++) {
-            let random = (Math.random() * ((nbIterations - 1) - i) + 1).toFixed(0)
-            if (arrayRandom.length > 0) {
-              while (arrayRandom[arrayRandom.length - 1] >= random) {
-                random = (Math.random() * ((nbIterations - 1) - i) + 1).toFixed(0)
-              }
-            }
-            time.push(data.time[random])
-            values.push(data.iterations[random])
-            arrayRandom.push(random)
-            labels.push('i = ' + random)
-          }
-          labels.push('i = ' + (nbIterations - 1))
-          time.push(data.time[nbIterations - 1])
-          values.push(data.iterations[nbIterations - 1])
-        }
-        let sum = 0
-        for (let i = 0; i < values.length; i++) {
-          sum += values[i]
-        }
-        let average = sum / values.length
-        let chart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Output value',
-              data: values,
-              backgroundColor: 'rgba(153,255,51,0.4)'
-            }]
-          },
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true
-                }
-              }]
-            }
-          }
-        })
+  let iteration = data.result.length
+  let percent = (iteration * 100) / data.iterations
+  // create finish status
+  changeStatus(data.id, data.status, percent + '%')
+})
 
-        let ctx2 = $('#time').empty()
-        let chart2 = new Chart(ctx2, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Time in milliseconds',
-              data: data.time,
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-              ],
-              borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)'
-              ],
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true
-                }
-              }]
-            }
-          }
-        })
-      })
-    })
-    let meta = info.add(link)
-    if ($('#meta-' + data.slaveId).val() !== meta) {
-      $('#meta-' + data.slaveId).empty().append(meta)
-    }
-  } else {
-    if ($('#meta-' + data.slaveId).val() !== info) {
-      $('#meta-' + data.slaveId).empty().append(info)
-    }
+/**
+ * Function to display the result of an algorithm
+ */
+socket.on('displayFinish', (data) => {
+  if (data.result.length === 0) {
+    return
   }
+  // create finish status
+  changeStatus(data.id, data.status)
 })
 
 /**
@@ -187,22 +97,22 @@ $('#uploadAlgo').click(() => {
  * Function to render an algorithm
  */
 $('body').on('click', '.launch', function (event) {
-  let slaveId = $(this).parents().find('form').find('input:hidden').val()
+  let slaveId = $(this).prop('id')
   $('#output-' + slaveId).text('$ >')
   $('#meta-' + slaveId).text('Available')
-  let stopButton = $('#stop-' + slaveId)
-  $(this).fadeOut(400, () => {
-    let that = $(this)
-    stopButton.fadeIn(400).click(() => {
-      $('#meta-' + slaveId).empty().append('<span class="ui tiny header red">Stopped</span><i class="red unlinkify small icon"></i>')
-      socket.emit('clientStoppedVM', slaveId)
-      that.fadeIn(400)
-      stopButton.fadeOut(400)
-    })
-  })
+  let iteration = $(this).parents('.' + slaveId).find('.iteration').val()
   $.post('/launchAlgo', {
-    server: $(this).prop('id'),
-    iteration: $(this).parents().find('.iteration').val(),
+    server: slaveId,
+    iteration: iteration,
     slaveId: slaveId
   })
+})
+
+$('body').on('click', '.stop', function (event) {
+  let slaveId = $(this).prop('id')
+  changeStatus(slaveId, 'stopped')
+  socket.emit('clientStoppedVM', slaveId)
+})
+$('body').on('click', '.statistics', function () {
+  window.location.assign('/chart')
 })

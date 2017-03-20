@@ -18,11 +18,15 @@ let AlgoController = class AlgoController {
 
   launch () {
     let slave = slaves.get(this.req.body.server)
+    let slaveId = slave.ip.split('.').join('') + slave.port
     if (slave !== undefined) {
+      slaves.reset(slaveId, this.req.body.iteration)
       let options = {
         method: 'POST',
         body: {
           algo: JSON.stringify(algo.get()),
+          output: algo.getOutput(),
+          input: algo.getInput(),
           iteration: this.req.body.iteration,
           slaveId: this.req.body.slaveId
         },

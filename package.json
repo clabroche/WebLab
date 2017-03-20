@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "master": "nodemon Master/app.js --ignore db",
-    "slave": " nodemon Slave/app.js --ignore db"
+    "master": "nodemon Master/app.js --ignore Master/public",
+    "slave": " nodemon Slave/app.js --ignore Slave/public"
   },
   "repository": {
     "type": "git",
@@ -22,28 +22,33 @@
   },
   "homepage": "https://github.com/TPCISIIE/WebLab#readme",
   "dependencies": {
-    "vm2": "*",
-    "tmp": "*",
-    "perfy": "*",
-    "chalk": "*",
     "body-parser": "~1.15.2",
+    "chalk": "*",
     "chart.js": "*",
     "cookie-parser": "~1.4.3",
     "cpu-stat": "^2.0.1",
     "debug": "~2.2.0",
+    "eachr": "^3.2.0",
     "express": "^4.14.0",
     "find-port": "^2.0.1",
     "ip": "^1.1.4",
+    "jQuery": "^1.7.4",
+    "jsdom": "^9.12.0",
+    "linebyline": "^1.3.0",
     "log-events": "^0.4.0",
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
+    "perfy": "*",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "safe-eval": "^0.3.0",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.7.2",
-    "twig": "^0.10.3"
+    "tmp": "*",
+    "twig": "^0.10.3",
+    "util-each": "^1.0.1",
+    "vm2": "*"
   },
   "devDependencies": {
     "eslint": "^3.15.0",
