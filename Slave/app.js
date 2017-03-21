@@ -29,9 +29,14 @@ app.use('/users', users)
 middlewaresAfter(express, app, io)
 findPort('localhost', config.port.min, config.port.max, (ports) => {
   let port = ports[0]
-  // On se connecte sur le master pour binder les evenements
-  let socket = ioClient.connect('http://localhost:8081')
-  // On notifie a master que l'esclave se connecte
-  socket.emit('slaveConnection', {ip: ip.address(), port: port})
-  server.listen(port)
+  var prompt = require('prompt')
+  prompt.start()
+  prompt.get('adressMaster', function (err, result) {
+    // On se connecte sur le master pour binder les evenements
+    global.adressMaster = result.adressMaster
+    let socket = ioClient.connect(global.adressMaster)
+    // On notifie a master que l'esclave se connecte
+    socket.emit('slaveConnection', {ip: ip.address(), port: port})
+    server.listen(port)
+  })
 })

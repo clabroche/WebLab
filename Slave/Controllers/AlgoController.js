@@ -31,7 +31,7 @@ let AlgoController = class AlgoController {
       iteration: this.req.body.iteration
     })
     this.child.on('message', (m) => {
-      let client = socket.connect('http://localhost:8081')
+      let client = socket.connect(global.adressMaster)
       client.once('connect', () => {
         if (m.preview != null && m.nthIteration != null) {
           client.emit('algorithmPreview', {
@@ -59,7 +59,7 @@ let AlgoController = class AlgoController {
         }
       })
     })
-    let client = socket.connect('http://localhost:8081')
+    let client = socket.connect(global.adressMaster)
     client.on('stopVM', (slaveId) => {
       if (this.id === slaveId && this.child.killed === false) {
         client.emit('stopFork')
