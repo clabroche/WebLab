@@ -107,7 +107,8 @@ function changeStatus (slaveId, status, progression) {
         let $progress = $('.ui.active.progress.' + slaveId)
         $progress.children('.bar').css({
           'width': progression,
-          'transition-duration': '300ms'
+          'transition-duration': '300ms',
+          'background-color': '#21ba45'
         })
         $progress.find('.progress').text(progression)
       } else {
