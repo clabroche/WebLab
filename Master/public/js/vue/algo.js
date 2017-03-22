@@ -72,7 +72,7 @@ function createHTMLCard (serverName, slave) {
   let $header = $('<div>').addClass('header')
   let $icon = $('<i>').addClass('disk green outline icon')
   let $title = $('<span>').text(slave.ip + ':' + slave.port)
-  let $description = $('  <form class="ui form">' +
+  let $description = $('  <form action="#" class="ui form">' +
                             '<div class="field">' +
                               '<input type="number" required class="iteration" placeholder="Number of iterations">' +
                             '</div> ' +
