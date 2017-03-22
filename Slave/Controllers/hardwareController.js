@@ -12,13 +12,14 @@ let hardwareController = class hardwareController {
   }
   getinfos () {
     cpuStat.usagePercent((err, percent, seconds) => {
+      console.log(os.freemem() + ' ' + os.totalmem())
       if (err) { return console.log(err) }
       let infos = {
         'architecture': os.arch(),
         'cpus': os.cpus(),
         'homedir': os.homedir(),
         'hostname': os.hostname(),
-        'freemem': os.freemem(),
+        'freemem': os.totalmem() - os.freemem(),
         'networkInterfaces': os.networkInterfaces(),
         'platform': os.platform(),
         'release': os.release(),
