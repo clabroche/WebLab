@@ -4,35 +4,11 @@
 function addSlave (slaveObject, state) {
   if (!$('.' + slaveObject.id).length) {
     let serverName = 'Server ' + slaveObject.ip + ':' + slaveObject.port
-    let icon = $('<i>').addClass('ui disk outline icon')
-    let title = $('<h3>').text(serverName).prepend(icon)
     let slave = $('<div>').addClass('slave ' + slaveObject.id)
-    $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
-      let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
-      let currentRAM
-      console.log(config.platform)
-      if (config.platform === 'linux') {
-        currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
-      } else {
-        currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
-      }
-      let cpu = $('<div>').addClass('ui green active progress')
-      cpu.append($('<div>').attr('style', 'transition-duration: 300ms; width:' + config.cpuUsage.toFixed(1) + '%;')
-            .addClass('bar')
-            .append($('<div>').addClass('progress').text(config.cpuUsage.toFixed(0) + '%')))
-      let percent = Math.round((currentRAM * 100) / totalRAM)
-      let ram = $('<div>').addClass('ui orange active progress')
-           .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + percent + '%;')
-               .addClass('bar')
-               .append($('<div>').addClass('progress').text(percent + '%'))
-           ).append($('<div>').addClass('label').text('Memory : ' + currentRAM + 'GB /' + totalRAM + 'GB'))
-      slave.append(cpu.clone().append($('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)))
-      slave.append(ram)
-      let card = createHTMLCard(serverName, slaveObject)
-      $('#container1').append(card)
-      toggleSlaves(state)
-    })
-    $('#slaveContainer').append(slave.append(title))
+    let card = createHTMLCard(serverName, slaveObject)
+    createHTMLHardware(serverName, slaveObject)
+    $('#container1').append(card)
+    toggleSlaves(state)
   }
 }
 
@@ -47,6 +23,48 @@ function toggleSlaves (state) {
     })
   }
 }
+
+function createHTMLHardware (serverName, slaveObject) {
+  let $slave = $('<div>').addClass('slave-' + slaveObject.id)
+  let $icon = $('<i>').addClass('ui disk outline icon')
+  let $title = $('<h3>').text(serverName).prepend($icon)
+  setInterval(function () {
+    $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
+      let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
+      let currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
+      let percent = Math.round((currentRAM * 100) / totalRAM)
+      if ($('.slave-' + slaveObject.id).length) {
+        $slave = $('.slave-' + slaveObject.id)
+        $slave.find('.cpu .bar').css('width', config.cpuUsage.toFixed(1) + '%')
+        $slave.find('.cpu .bar .progress').text(config.cpuUsage.toFixed(1) + '%')
+        $slave.find('.ram .bar').css('width', percent + '%')
+        $slave.find('.ram .bar .progress').text(percent + '%')
+      } else {
+        let $cpu = $('<div>').addClass('ui green active progress cpu')
+        $cpu.append($('<div>').attr('style', 'transition-duration: 300ms; width:' + config.cpuUsage.toFixed(1) + '%;')
+              .addClass('bar')
+              .append($('<div>').addClass('progress').text(config.cpuUsage.toFixed(0) + '%')))
+        let $ram = $('<div>').addClass('ui orange active progress ram')
+             .append($('<div>').attr('style', 'transition-duration: 300ms; width:' + percent + '%;')
+                 .addClass('bar')
+                 .append($('<div>').addClass('progress').text(percent + '%'))
+             ).append($('<div>').addClass('label').text('Memory : ' + currentRAM + 'GB /' + totalRAM + 'GB'))
+
+        $('#slaveContainer').append($slave.append())
+        $('#slaveContainer').append(
+          $slave.append(
+            $title,
+            $cpu.clone().append(
+              $('<div>').addClass('label').text('CPU : ' + config.cpus[0].model + ' x' + config.cpus.length)
+            ),
+            $ram
+          )
+        )
+      }
+    })
+  }, 2000)
+}
+
 function createHTMLCard (serverName, slave) {
   let slaveId = slave.ip + ':' + slave.port
   slaveId = slaveId.split('.').join('')
