@@ -10,8 +10,9 @@ function addSlave (slaveObject, state) {
     $.getJSON('http://' + slaveObject.ip + ':' + slaveObject.port + '/hardware', (config, textStatus) => {
       let totalRAM = (config.totalmem / Math.pow(10, 9)).toFixed(2)
       let currentRAM
+      console.log(config.platform)
       if (config.platform === 'linux') {
-        currentRAM = (config.freemem / Math.pow(10, 8)).toFixed(2)
+        currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
       } else {
         currentRAM = (config.freemem / Math.pow(10, 9)).toFixed(2)
       }
