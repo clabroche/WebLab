@@ -107,13 +107,12 @@ function changeStatus (slaveId, status, progression) {
         let $progress = $('.ui.active.progress.' + slaveId)
         $progress.children('.bar').css({
           'width': progression,
-          'transition-duration': '300ms',
-          'background-color': '#21ba45'
+          'transition-duration': '300ms'
         })
         $progress.find('.progress').text(progression)
       } else {
         $status = changeMeta(slaveId, [$executing, $analytics])
-        let $progress = $('<div>').addClass('ui active progress ' + slaveId).attr('data-percent', progression)
+        let $progress = $('<div>').addClass('ui active progress green ' + slaveId).attr('data-percent', progression)
         let $bar = $('<div>').addClass('bar')
         let $textProgress = $('<div>').addClass('progress').text('0%')
         let $label = $('<div>').addClass('label').text('Progression')
