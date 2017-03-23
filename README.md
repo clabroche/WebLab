@@ -38,6 +38,10 @@ It was build to help mathematicians, statisticians and developers with their cod
  ```bash
   $ npm run slave
   ``` 
+  
+ # Known issues
+  - Not immuned to all known methods of attacks `while(1<2){} /**cc @deadmau5**/, etc...`
+  
 # Authors
 - Xavier CHOPIN 
 - Corentin LABROCHE
