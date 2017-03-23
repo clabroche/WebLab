@@ -82,9 +82,13 @@ function createHTMLCard (serverName, slave) {
   let $progressContainer = $('<div>').addClass('progressContainer-' + slaveId)
   let $body = $('<div>').append(changeStatus(slaveId, slave.status), $description)
   let stopButton = $('<div>').addClass('ui basic red button stop').prop('id', slaveId).text('Stop').append($('<i>').addClass('window stop right icon'))
+  let pauseButton = $('<div>').addClass('ui basic yellow button paused').prop('id', slaveId).text('Pause').append($('<i>').addClass('window pause right icon'))
+  let resumeButton = $('<div>').addClass('ui basic yellow button resume').prop('id', slaveId).text('Resume').append($('<i>').addClass('window caret right icon'))
   let runButton = '<div class="ui basic blue button launch" id="' + slaveId + '"> Run<i class="caret right icon"></i> </div>'
-  let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton).append(stopButton)
+  let buttons = $('<div>').addClass('extra content center aligned grid').prop('id', 'action-' + slaveId).append(runButton, resumeButton, pauseButton, stopButton)
   stopButton.hide()
+  pauseButton.hide()
+  resumeButton.hide()
   $header.append($icon, $title)
   let $card = $('<div>').addClass('card ' + slave.id).append($('<div>').addClass('content').append($header, $body, $progressContainer)).append(buttons)
   return $card
@@ -96,6 +100,7 @@ function changeStatus (slaveId, status, progression) {
   let $available = $('<span class="ui tiny header blue">Available</span><i class="sign in small blue icon"></i>')
   let $executing = $('<span class="ui tiny header orange">Executing</span><i class="notched orange circle loading small icon"></i>')
   let $stopped = $('<span>').addClass('ui tiny header red').text('Stopped').add($('<i>').addClass('red unlinkify small icon'))
+  let $paused = $('<span>').addClass('ui tiny header yellow').text('Paused').add($('<i>').addClass('yellow pause small icon'))
   let $analytics = $('<span  class="statistics">').text('Check the statistics')
   switch (status) {
     case 'available':
@@ -103,6 +108,7 @@ function changeStatus (slaveId, status, progression) {
       break
     case 'executing':
       let $progressContainer = $('.progressContainer-' + slaveId)
+      $status = changeMeta(slaveId, [$executing, $analytics])
       if ($('.progress.' + slaveId).length) {
         let $progress = $('.ui.active.progress.' + slaveId)
         $progress.children('.bar').css({
@@ -111,7 +117,6 @@ function changeStatus (slaveId, status, progression) {
         })
         $progress.find('.progress').text(progression)
       } else {
-        $status = changeMeta(slaveId, [$executing, $analytics])
         let $progress = $('<div>').addClass('ui active progress green ' + slaveId).attr('data-percent', progression)
         let $bar = $('<div>').addClass('bar')
         let $textProgress = $('<div>').addClass('progress').text('0%')
@@ -120,7 +125,9 @@ function changeStatus (slaveId, status, progression) {
         $progressContainer.append($progress.append($bar.append($textProgress), $label))
       }
       $('.' + slaveId).find('.stop').fadeIn(400)
+      $('.' + slaveId).find('.paused').fadeIn(400)
       $('.' + slaveId).find('.launch').fadeOut(400)
+      $('.' + slaveId).find('.resume').fadeOut(400)
       break
     case 'finish':
       $meta = $('<span>').addClass('ui tiny header green').text('Finished').add($('<i>').addClass('green check small icon'))
@@ -128,12 +135,26 @@ function changeStatus (slaveId, status, progression) {
       $status = changeMeta(slaveId, [$meta, $analytics])
       $('.' + slaveId).find('.stop').fadeOut(400)
       $('.' + slaveId).find('.launch').fadeIn(400)
+      $('.' + slaveId).find('.paused').fadeOut(400)
+      $('.' + slaveId).find('.resume').fadeOut(400)
       break
     case 'stopped':
       $('.progressContainer-' + slaveId).empty()
       $status = changeMeta(slaveId, $stopped)
       $('.' + slaveId).find('.stop').fadeOut(400)
       $('.' + slaveId).find('.launch').fadeIn(400)
+      $('.' + slaveId).find('.paused').fadeOut(400)
+      $('.' + slaveId).find('.resume').fadeOut(400)
+      break
+    case 'paused':
+      $status = changeMeta(slaveId, $paused)
+      setTimeout(function () {
+        $('.' + slaveId).find('.stop').fadeOut(400)
+        $('.' + slaveId).find('.launch').fadeOut(400)
+        $('.' + slaveId).find('.paused').fadeOut(400)
+        $('.' + slaveId).find('.resume').fadeIn(400)
+      }, 200);
+
       break
     default:
 

@@ -67,6 +67,14 @@ let AlgoController = class AlgoController {
         this.child.kill('SIGTERM')
       }
     })
+    client.on('pauseVM', (slaveId) => {
+      client.emit('pauseFork')
+      this.child.kill('SIGSTOP')
+    })
+    client.on('resumeVM', (slaveId) => {
+      client.emit('resumeFork')
+      this.child.kill('SIGCONT')
+    })
   }
 }
 
