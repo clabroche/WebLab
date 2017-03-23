@@ -26,6 +26,14 @@ let socket = (io) => {
       slaves.changeStatus(slaveId, 'stopped')
       socket.broadcast.emit('stopVM', slaveId)
     })
+    socket.on('clientPausedVM', (slaveId) => {
+      slaves.changeStatus(slaveId, 'paused')
+      socket.broadcast.emit('pauseVM', slaveId)
+    })
+    socket.on('clientResumeVM', (slaveId) => {
+      slaves.changeStatus(slaveId, 'executing')
+      socket.broadcast.emit('resumeVM', slaveId)
+    })
     socket.on('clientSlaveInit', () => {
       let init = {
         slaves: slaves.all(),

@@ -113,6 +113,23 @@ $('body').on('click', '.stop', function (event) {
   changeStatus(slaveId, 'stopped')
   socket.emit('clientStoppedVM', slaveId)
 })
+
+$('body').on('click', '.paused', function (event) {
+  let slaveId = $(this).prop('id')
+  if (slaveId) {
+    changeStatus(slaveId, 'paused')
+    socket.emit('clientPausedVM', slaveId)
+  }
+})
+
+$('body').on('click', '.resume', function (event) {
+  let slaveId = $(this).prop('id')
+  if (slaveId) {
+    changeStatus(slaveId, 'executing')
+    socket.emit('clientResumeVM', slaveId)
+  }
+})
+
 $('body').on('click', '.statistics', function () {
   window.location.assign('/chart')
 })
