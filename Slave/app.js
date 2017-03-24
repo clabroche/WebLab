@@ -29,19 +29,23 @@ app.use('/users', users)
 middlewaresAfter(express, app, io)
 findPort('localhost', config.port.min, config.port.max, (ports) => {
   let port = ports[0]
-  var prompt = require('prompt')
-  // prompt.start()
-  // prompt.get('adressMaster', function (err, result) {
-  //   // On se connecte sur le master pour binder les evenements
-  //   global.adressMaster = result.adressMaster
-  //   let socket = ioClient.connect(global.adressMaster)
-  //   // On notifie a master que l'esclave se connecte
-  //   socket.emit('slaveConnection', {ip: ip.address(), port: port})
-  //   server.listen(port)
-  // })
-  global.adressMaster = 'http://localhost:8081'
+  var promptly = require('promptly')
+  promptly.prompt('Use localhost:8081 (y)/(n)? ', { default: 'y' }, function (err, value) {
+    if (value === 'y' || value === 'yes' || value === '') {
+      connect('http://localhost:8081', port)
+    } else if (value === 'n' || value === 'no') {
+      promptly.prompt('Where is the master node ? ', { default: 'http://localhost:8081' }, function (err, adress) {
+        connect(adress, port)
+        err
+      })
+    }
+    err
+  })
+})
+function connect (adress, port) {
+  global.adressMaster = adress
   let socket = ioClient.connect(global.adressMaster)
   // On notifie a master que l'esclave se connecte
   socket.emit('slaveConnection', {ip: ip.address(), port: port})
   server.listen(port)
-})
+}
