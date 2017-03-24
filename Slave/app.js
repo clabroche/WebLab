@@ -35,7 +35,18 @@ findPort('localhost', config.port.min, config.port.max, (ports) => {
       connect('http://localhost:8081', port)
     } else if (value === 'n' || value === 'no') {
       promptly.prompt('Where is the master node ? ', { default: 'http://localhost:8081' }, function (err, adress) {
-        connect(adress, port)
+        let protocol = adress.split('://')[0]
+        if (protocol === 'http' || protocol === 'https') {
+          connect(adress, port)
+        } else {
+          promptly.prompt('Use http://(1) or https://(2) ? ', { default: 'http://' }, function (err, protocol) {
+            if (protocol === 'http' || protocol === 'http://' || protocol === '1') {
+              connect('http://' + adress, port)
+            } else if (protocol === 'https' || protocol === 'https://' || protocol === '2') {
+              connect('https://' + adress, port)
+            }
+          })
+        }
         err
       })
     }
