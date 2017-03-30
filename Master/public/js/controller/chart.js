@@ -1,4 +1,5 @@
 let configChart = []
+let dataAvg = {}
 $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
   let data = {}
   let iterations = []
@@ -6,22 +7,42 @@ $.getJSON('/chart/result', {param1: 'value1'}, function (json, textStatus) {
   $.each(json.slaves, function (index, slave) {
     $.each(json.algo, function (index, output) {
       data[output] = []
+      if (dataAvg[output] === undefined) {
+        dataAvg[output] = {}
+      }
     })
-
-    slave.result = slave.result.filter(function (n) { return n !== null })
-    slave.result = slave.result.sort(sortByIterations)
+    if (slave.result) {
+      slave.result = slave.result.filter(function (n) { return n !== null })
+      slave.result = slave.result.sort(sortByIterations)
+    }
     $.each(slave.result, function (index, result) {
       $.each(result, function (index, variable) {
         if (index == 'iterations') {
           iterations.push(result.iterations)
         } else {
           data[index].push(variable)
+          if (dataAvg[index][result.iterations] === undefined) {
+            dataAvg[index][result.iterations] = []
+          }
+          dataAvg[index][result.iterations].push(variable)
         }
       })
     })
     createChart(slave.id, data, iterations, slave.ip + ':' + slave.port)
     iterations = []
     data = {}
+  })
+  // moyenne:
+  $.each(dataAvg, function (indexVariable, variable) {
+    $.each(variable, function (index, iterationValues) {
+      var sum = 0
+      for (var i = 0; i < iterationValues.length; i++) {
+        sum += iterationValues[i] // don't forget to add the base
+      }
+      var avg = sum / iterationValues.length
+      dataAvg[indexVariable][index] = avg
+    })
+    createChartAvg(indexVariable, dataAvg[indexVariable], indexVariable, indexVariable)
   })
 })
 
@@ -43,6 +64,7 @@ $('body').on('change', 'select', function () {
     }
   })
 })
+
 function createChart (slaveId, data, iterations, name) {
   let $chart = $('<div>').addClass('chart').prop('id', 'chart-' + slaveId)
   let $title = $('<h3>').text(name)
@@ -61,9 +83,13 @@ function createChart (slaveId, data, iterations, name) {
   $('.containerChart').append($chart.append($title, $canvas, $chooseGraph))
   let datasets = []
   $.each(data, function (index, el) {
+    let x = []
+    $.each(el, function (i, n) {
+        x.push(n)
+    })
     datasets.push({
       label: index,
-      data: el,
+      data: x,
       backgroundColor: getRandomColor()
     })
   })
@@ -82,6 +108,52 @@ function createChart (slaveId, data, iterations, name) {
     data: dataChart
   })
 }
+function createChartAvg (slaveId, data, variable, name) {
+  let $chart = $('<div>').addClass('chart').prop('id', 'chart-' + slaveId)
+  let $title = $('<h3>').text('Average: ' + name)
+  let $canvas = $('<canvas>').css({
+    width: '400px',
+    height: '120px'
+  })
+  let $chooseGraph = $('<select>').prop('id', 'choose-' + slaveId).addClass('ui fluid selection dropdown chooser')
+                      .append(
+                        $('<option>').prop('value', 'line').text('line'),
+                        $('<option>').prop('value', 'bar').text('bar'),
+                        $('<option>').prop('value', 'radar').text('radar'),
+                        $('<option>').prop('value', 'pie').text('pie'),
+                        $('<option>').prop('value', 'bubble').text('bubble')
+                      )
+  $('.containerChart').append($chart.append($title, $canvas, $chooseGraph))
+  let datasets = []
+  let iterations = []
+  for (var i = 0; i < Object.keys(data).length; i++) {
+    iterations.push(i)
+  }
+  let x = []
+  $.each(data, function (i, n) {
+    x.push(n)
+  })
+  datasets.push({
+    label: name,
+    data: x,
+    backgroundColor: getRandomColor()
+  })
+
+  let dataChart = {
+    labels: iterations,
+    datasets: datasets
+  }
+  configChart.push({
+    slaveId: slaveId,
+    data: dataChart
+  })
+  var ctx = $('#chart-' + slaveId).find('canvas')[0].getContext('2d')
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: dataChart
+  })
+}
+
 function getRandomColor () {
   var letters = '0123456789ABCDEF'
   var color = '#'
