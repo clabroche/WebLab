@@ -3,52 +3,45 @@ let algo = require('../Models/Algo')
 let Slaves = function () {
   let slaves = []
   return {
-    addSlave (res) {
-      res.io.on('connection', (socket) => {
-        socket.on('clientSlaveInit', (slaveParameter) => {
-          let init = {
-            slaves: slaves,
-            state: algo.get()
-          }
-          socket.emit('slaveInit', init)
-        })
-        // Lors de la connection d'un serveur
-        socket.on('slaveConnection', (slaveParameter) => {
-          let slave = {
-            ip: slaveParameter.ip,
-            port: slaveParameter.port,
-            id: socket.id,
-            available: true
-          }
-          slaves.push(slave)
-          // On notifie la vue qu'un esclave s'est connecté
-          socket.broadcast.emit('slaveConnection', slave)
-          // Lors de la deconnexion
-          socket.on('disconnect', () => {
-            // On parcours le tableau des esclaves pour le supprimer de la liste
-            slaves.forEach((slave, index, object) => {
-              if (slave.id === socket.id) {
-                object.splice(index, 1)
-                // On notifie la vue de la deconnexion
-                socket.broadcast.emit('slaveDisconnect', slave)
-              }
-            })
-          })
-        })
-      })
+    addSlave (slaveParameter) {
+      slaves.push(slaveParameter)
     },
     all () {
       return slaves
     },
-    get (server) {
-      server = server.split(':')
+    get (slaveId) {
       let slaveResult
       slaves.forEach(slave => {
-        if (slave.ip === server[0] && slave.port === Number(server[1])) {
+        if (slave.id === slaveId) {
           slaveResult = slave
         }
       })
       return slaveResult
+    },
+    pushResult (data) {
+      slaves.forEach(slave => {
+        if (slave.id === data.slaveId) {
+          if (slave.result === undefined) {
+            slave.result = []
+          }
+          slave.result.push(data.result)
+        }
+      })
+    },
+    changeStatus (slaveId, status) {
+      slaves.forEach(slave => {
+        if (slave.id === slaveId) {
+          slave.status = status
+        }
+      })
+    },
+    reset (slaveId, iterations) {
+      slaves.forEach(slave => {
+        if (slave.id === slaveId) {
+          delete slave['result']
+          slave.iterations = iterations
+        }
+      })
     },
     available () {
       let availableSlaves = []
@@ -58,6 +51,13 @@ let Slaves = function () {
         }
       })
       return availableSlaves
+    },
+    remove (slaveParameter) {
+      slaves.forEach((slave, index, object) => {
+        if (slave.id === slaveParameter.id) {
+          object.splice(index, 1)
+        }
+      })
     }
   }
 }

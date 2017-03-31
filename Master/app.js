@@ -4,6 +4,7 @@ let middlewaresBefore = require('./Middlewares/before')
 let index = require('./routes/index')
 let result = require('./routes/result')
 let config = require('./config')
+let socket = require('./Controllers/socket')
 
 let express = require('express')
 let app = express()
@@ -17,8 +18,8 @@ app.set('twig options', {
 app.set('view engine', 'twig')
 
 middlewaresBefore(express, app, io)
-
 app.use('/', index, result)
-
 middlewaresAfter(express, app, io)
+
+socket(io)
 server.listen(config.port)
